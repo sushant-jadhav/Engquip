@@ -9,7 +9,7 @@
         <meta name="author" content="">
         <link rel="shortcut icon" href="../../assets/ico/favicon.png">
 
-        <title>BootListings - A Bootstrap Classifieds template</title>
+        <title>ENQUIP- A Classifieds Ads for engg. students</title>
 
         <!-- Bootstrap core CSS -->
         <link id="switch_style" href="css/bootstrap.css" rel="stylesheet">
