@@ -4,7 +4,7 @@ if(isset($_SESSION['uid'])){
  $username=$_SESSION['user'];
   }
  if (isset($_GET['opId'])){
-    $opid=$_GET['opId'];
+    $opid=mysql_real_escape_string($_GET['opId']);
  }
 ?>
 <!DOCTYPE html>
@@ -29,6 +29,19 @@ if(isset($_SESSION['uid'])){
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
         <link rel="stylesheet" type="text/css" href="js/fancybox/helpers/jquery.fancybox-buttons.css?v=2.1.5" media="screen" />
+        <style>
+        .panel-heading span {
+            margin-top: -5px;
+            font-size: 15px;
+        }
+        /*.row {
+            margin-top: 40px;
+            padding: 0 10px;
+        }*/
+        .clickable {
+            cursor: pointer;
+        }    
+        </style>
         
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -83,9 +96,8 @@ if(isset($_SESSION['uid'])){
                 </div>
             </nav>
             <?php
-            if(isset($_GET['search'])){$srch=$_GET['search']; }else{$srch=$_POST['term'];$_SESSION['val']=$srch;}
+            if(isset($_GET['search'])){$srch=$_GET['search'];  }elseif (isset($_POST['term'])){$srch=$_POST['term'];$_SESSION['val']=$srch;$cat=$_POST['cat'];}
             if(isset($_GET['category'])){$cat=$_GET['category'];}
-            
             ?>
             <div class="jumbotron home-tron-search well ">
                 <div class="container">
@@ -105,16 +117,15 @@ if(isset($_SESSION['uid'])){
                                                     <input type="text" class="form-control col-sm-3" name="term" placeholder="<?php if(!isset($_POST['term'])){echo "e.g. BMW, 2 bed flat, sofa";} else { echo "You Search for ",$srch;} ?>">
                                                     <div class=" input-group-addon hidden-xs">
                                                         <div class="btn-group" >
-                                                            <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown">
-                                                                All categories <span class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu" role="menu">
-                                                                <li value="Books"><a>Books</a></li>
-                                                                <li><a href="#">Tools</a></li>
-                                                                <li><a href="#">Electronics & Computer</a></li>
-                                                                <li><a href="#">Services</a></li>
-                                                                <li><a href="#">Jobs</a></li>
-                                                            </ul>
+                                                           <select class="btn dropdown-toggle" name="cat">
+                                                                <option>Choose Category</option>
+                                                                <option value="Books">Books</option>
+                                                                <option value="Tools">Tools</option>
+                                                                <option value="Electronics & Computer">Electronics & Computer</option>
+                                                                <option value="Services">Services</option>
+                                                                <option value="Jobs">Jobs</option>
+                                                            </select>
+
                                                         </div>
                                                     </div>
 
@@ -142,168 +153,80 @@ if(isset($_SESSION['uid'])){
                     </div>
                 </div>
             </div>
-            
 
 <div class="container">
-
 
     <br />
     <div class="row">
         <div class="col-sm-12">
             <ol class="breadcrumb">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Vehicles</a></li>
-                <li class="active">Cars</li>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="#"><?php
+                                if(isset($_GET['search'])){$srch=$_GET['search'];  }elseif (isset($_POST['term'])){$srch=$_POST['term'];$_SESSION['val']=$srch;$cat=$_POST['cat']; echo $cat; }?></a></li>
+                <!-- <li class="active">Cars</li> -->
                 <!-- <li class="active">4,699 results for <strong>"Cars"</strong> in London</li> -->
             </ol>
         </div>
     </div>
 
-
+<?php ?>
 
     <div class="row">
     <div class="col-sm-3  hidden-xs">
-            <div class="sidebar ">      
+    <div class="sidebar ">      
     <div class="row ">
-
+    <strong>Filter Here</strong>
     </div>
     <br />
-
     <div class="row ">
-
-
-        <div class="col-sm-12">
+        <div class="col-sm-12 col-sm-offset-0">
 
             <div class="panel panel-default">
-                <div class="panel-heading">Filters</div>
+                <div class="panel-heading">Category<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span></div>
                 <div class="panel-body">
                     <form class="form-inline mini" style="margin-bottom: 0px;">
                         <fieldset>
 
-                            <div class="row filter-row">
-                                <div class="col-sm-6">
-                                    <label>Category</label>
+                             <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" id="book" name="Books" value="book"></label>
                                 </div>
-                                <div class="col-sm-6">
-                                    <select class=" form-control ">
-                                        <option>Any</option>
-                                        <option>Alfa romeo</option>
-                                        <option>Houses</option>
-                                        <option>Flats/ Apartments</option>
-                                        <option>Bungalows</option>
-                                        <option>Land</option>
-                                        <option>Commercial property</option>
-                                        <option>Other</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row filter-row">
-                                <div class="col-sm-6">
-                                    <label>Mileage</label>
-                                </div>
-                                <div class="col-sm-6">
-                                    <select class="col-sm-10 form-control ">
-                                        <option>Any</option>
-                                        <option>Alfa romeo</option>
-                                        <option>Houses</option>
-                                        <option>Flats/ Apartments</option>
-                                        <option>Bungalows</option>
-                                        <option>Land</option>
-                                        <option>Commercial property</option>
-                                        <option>Other</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row filter-row">
-                                <div class="col-sm-6">
-                                    <label>Seller type</label>
-                                </div>
-                                <div class="col-sm-6">
-                                    <select class="col-sm-10 form-control ">
-                                        <option>Any</option>
-                                        <option>Alfa romeo</option>
-                                        <option>Houses</option>
-                                        <option>Flats/ Apartments</option>
-                                        <option>Bungalows</option>
-                                        <option>Land</option>
-                                        <option>Commercial property</option>
-                                        <option>Other</option>
-                                    </select>
+                                <div class="checkbox">
+                                  <label>Books</label>
                                 </div>
                             </div>
                             <div class="row filter-row">
-                                <div class="col-sm-6">
-                                    <label>Body type</label>
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" name="Tools" value=""></label>
                                 </div>
-                                <div class="col-sm-6">
-                                    <select class="col-sm-10 form-control ">
-                                        <option>Any</option>
-                                        <option>Alfa romeo</option>
-                                        <option>Houses</option>
-                                        <option>Flats/ Apartments</option>
-                                        <option>Bungalows</option>
-                                        <option>Land</option>
-                                        <option>Commercial property</option>
-                                        <option>Other</option>
-                                    </select>
+                                <div class="checkbox">
+                                  <label>Tools</label>
                                 </div>
                             </div>
                             <div class="row filter-row">
-                                <div class="col-sm-12">
-                                    <label>Price range</label>
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" name="Tools" value=""></label>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-inr"></i></span>
-                                        <input type="email" class="form-control price-input" placeholder="min" />
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-inr"></i></span>
-                                        <input type="email" class="form-control price-input" placeholder="max" />
-                                    </div>
+                                <div class="checkbox">
+                                  <label>Electronics & computer</label>
                                 </div>
                             </div>
                             <div class="row filter-row">
-                                <div class="col-sm-12">
-                                    <label>Search only:</label>
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" name="Tools" value=""></label>
                                 </div>
-                                <div class="col-sm-12">
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="optionsRadios" value="option1" checked>
-                                            Urgent ads
-                                        </label>
-                                    </div><br />
-
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="optionsRadios" value="option2">
-                                            Featured ads
-                                        </label>
-                                    </div><br />
-
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="optionsRadios" value="option2">
-                                            Only ads with pictures
-                                        </label>
-                                    </div>
+                                <div class="checkbox">
+                                  <label>Services</label>
                                 </div>
                             </div>
-
-                            <div class="row filter-row">    
-
-                                <div class="col-sm-2 pull-right" style="margin-top: 10px;">
-                                    <button class="btn btn-primary pull-right" type="submit">Update results</button>
-
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" name="Tools" value=""></label>
                                 </div>
-                            </div>                      
-
-
+                                <div class="checkbox">
+                                  <label>Jobs</label>
+                                </div>
+                            </div>
                         </fieldset>
                     </form>
                 </div>
@@ -315,7 +238,175 @@ if(isset($_SESSION['uid'])){
 
 
     <div class="row ">
-        <div class="col-sm-11">
+        <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Options<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span></div>
+                <div class="panel-body" style="height: 150px;overflow-y: scroll;">
+                <form class="form-inline mini" style="margin-bottom: 0px;">
+                        <fieldset>
+
+                             <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" onselect="ajaxFunction()" value="1"></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>Computer Science</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox"  value="2"></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>Infromation Technology</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox"  value=""></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>Mechanical</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" value="4"></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>Electronics</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" value="5"></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>Extc</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" value="6"></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>Electrical</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" value="7"></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>Civil</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" value="8"></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>Production</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" value="20"></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>Placement Books</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" value="21"></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>GRE Books & Others</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" value="9"></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>WorkShoop Tools</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" value="10"></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>Drafters</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" value="12"></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>Computer & Accessories</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" value="13"></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>Camera & Accessories</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" value="15"></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>Classes</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" value="16"></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>Repair Stores</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="row ">
+        <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Options<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span></div>
+                <div class="panel-body">
+                <form class="form-inline mini" style="margin-bottom: 0px;">
+                        <fieldset>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" name="New" value=""></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>New</label>
+                                </div>
+                            </div>
+                            <div class="row filter-row">
+                                <div class="col-sm-3">
+                                    <label><input type="checkbox" name="Used" value=""></label>
+                                </div>
+                                <div class="checkbox">
+                                  <label>Used</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -323,12 +414,8 @@ if(isset($_SESSION['uid'])){
         <div class="col-sm-11">
         </div>
     </div>
-
-    <div class="row ">
-        <div class="col-sm-11">
-        </div>
-    </div>
-</div>        </div>
+</div>
+</div>
         <div class="col-sm-9 pull-left listings">
             <div class="row listing-row" style="margin-top: -10px;">
                 <div class="pull-left">
@@ -344,14 +431,16 @@ if(isset($_SESSION['uid'])){
                 <?php if(isset($srch)){
                     include("config.php");
                     //$sql="SELECT ads.*,options.* FROM ads inner join options on ads.opId=options.opId where ads.adHeading like '%".$srch."%'  ";
-             $e="SELECT ads.*,options.* FROM ads left join options on ads.opId=options.opId  where  ads.adHeading  like '%{$srch}%' order by adId desc limit 8";
-             $q = mysql_query($e,$connect); 
+             $e="SELECT ads.*,options.*,category.* FROM ads left join options on ads.opId=options.opId inner join category on options.cId=category.cId where  ads.adHeading  like '%{$srch}%' and category.cName='$cat'  order by adId desc limit 8";
+             $q = mysql_query($e,$connect);
+             $nothing=mysql_num_rows($q);
+             if($nothing>0){
             //while($row = mysql_fetch_assoc($q)){
                 while($ad = mysql_fetch_object($q)){
             $id = $ad->adId;
             ?>
 
-                <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row">
+                <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row" id="ajaxdiv">
                 <div class="ribbon-wrapper-red"><div class="ribbon-red">&nbsp;<span>Featured</span></div></div>
                                 <div class="col-sm-2">
                     <a href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>" class="thumbnail " ><img alt="176 * 120" src="<?php echo $ad->adImg1;?>"></a>
@@ -375,12 +464,12 @@ if(isset($_SESSION['uid'])){
                         <span class="classified_links pull-right">
                             <a class="link-info underline" href="#">Share</a>&nbsp;
                             <a class="link-info underline" href="#">Add to favorites</a>
-                            &nbsp;<a class="link-info underline" href="details.php">Details</a>&nbsp;
+                            &nbsp;<a class="link-info underline" href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>">Details</a>&nbsp;
                             &nbsp;<a class="link-info underline" href="#">Contact</a></span>
                     </p>
                 </div>
             </div>
-            <?php }  
+            <?php }
             if(mysql_num_rows($q)>0){?>
             <div id="more<?php echo $id; ?>" class="pmc_loadbox">
             <a href="#" id="<?php echo $id; ?>" class="more" style="margin-left:200px">Loading..</a>
@@ -388,9 +477,12 @@ if(isset($_SESSION['uid'])){
             </div>
             <?php } else { ?>
             <div id="more" class="pmc_loadbox">
-            <a href="#" id="" class="more">No record</a>
-            </div><?php }?>  <?php }$nothing=mysql_num_rows($q);if($nothing==0){echo "<br/><br/><center><b>NO result found</b></center>";}?>
-                <?php //}?>
+            <a href="#" id="" class="more"></a>
+            </div><?php }}
+            if($nothing==0){echo "<br/><br/><center><b>NO result found</b></center>";}} ?>
+            <?php
+
+            ?>
             <br/>
 
         </div>
@@ -504,6 +596,7 @@ if(isset($_SESSION['uid'])){
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.flot.js"></script>
 <script src="js/dropzone.js"></script>
+<script src="js/filter.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){             
     function load()
@@ -514,7 +607,7 @@ $(document).ready(function(){
         $("#loader").show();
         $.ajax({
         type: 'POST',
-        url: 'search_more.php?search=<?php echo $srch;?>',
+        url: 'search_more.php?search=<?php echo $srch;?>&category=<?php echo $cat;?>',
         data: {id:ID},
         cache: false,
         success: function(html){
@@ -532,6 +625,50 @@ $(document).ready(function(){
     }
 });
     });
+</script>
+<script type="text/javascript">
+    jQuery(function ($) {
+        $('.panel-heading span.clickable').on("click", function (e) {
+            if ($(this).hasClass('panel-collapsed')) {
+                // expand the panel
+                $(this).parents('.panel').find('.panel-body').slideDown();
+                $(this).removeClass('panel-collapsed');
+                $(this).find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+            }
+            else {
+                // collapse the panel
+                $(this).parents('.panel').find('.panel-body').slideUp();
+                $(this).addClass('panel-collapsed');
+                $(this).find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+     function ajaxFunction(){
+               var ajaxRequest;  // The variable that makes Ajax possible!
+               try{
+                  // Opera 8.0+, Firefox, Safari
+                  ajaxRequest = new XMLHttpRequest();
+               }
+               catch (e){
+                  // Internet Explorer Browsers
+                  try{
+                     ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+                  }
+                  catch (e) {
+                     try{
+                        ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+                     }
+                     catch (e){
+                        // Something went wrong
+                        alert("Your browser broke!");
+                        return false;
+                     }
+                  }
+               }
+               
+            }
 </script>
 
 <!-- Add fancyBox main JS and CSS files -->

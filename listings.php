@@ -86,7 +86,9 @@ if(isset($_SESSION['uid'])){
             <div class="jumbotron home-tron-search well ">
                 <div class="container">
                     <div class="row">
-
+                        <?php if(isset($_GET['search'])){ $srch= $_GET['search'];}else{$srch=null;}?>
+                        <?php if(isset($_GET['category'])){$cat=$_GET['category'];}?>
+                        <form method="GET" action="search.php?search=<?php echo $srch;?>">
                         <div class="col-sm-12">
                             <div class="home-tron-search-inner">
 
@@ -99,19 +101,27 @@ if(isset($_SESSION['uid'])){
                                                 <div class="input-group">
                                                     <span class="input-group-addon input-group-addon-text hidden-xs">Find me a</span>
 
-                                                    <input type="text" class="form-control col-sm-3" placeholder="e.g. BMW, 2 bed flat, sofa ">
+                                                    <input type="text" class="form-control col-sm-3" name="search" placeholder="e.g. BMW, 2 bed flat, sofa ">
                                                     <div class=" input-group-addon hidden-xs">
                                                         <div class="btn-group" >
-                                                            <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown">
+                                                            <!-- <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown">
                                                                 All categories <span class="caret"></span>
                                                             </button>
                                                             <ul class="dropdown-menu" role="menu">
-                                                                <li><a href="#">Books</a></li>
-                                                                <li><a href="#">Tools</a></li>
-                                                                <li><a href="#">Electronics & Computer</a></li>
-                                                                <li><a href="#">Services</a></li>
-                                                                <li><a href="#">Jobs</a></li>
-                                                            </ul>
+                                                                <li><a><option>Books</option></a></li>
+                                                                <li><a><option>Tools</option></a></li>
+                                                                <li><a><option>Electronics & Computer</option></a></li>
+                                                                <li><a><option>Services</option></a></li>
+                                                                <li><a><option>Jobs</option></a></li>
+                                                            </ul> -->
+                                                            <select class="btn dropdown-toggle">
+                                                                <option>Choose Category</option>
+                                                                <option value="Books">Books</option>
+                                                                <option value="Tools">Tools</option>
+                                                                <option value="Electronics & Computer">Electronics & Computer</option>
+                                                                <option value="Services">Services</option>
+                                                                <option value="Jobs">Jobs</option>
+                                                            </select>
                                                         </div>
                                                     </div>
 
@@ -127,7 +137,7 @@ if(isset($_SESSION['uid'])){
                                     <div class="col-sm-4 col-xs-3" style="text-align: center">
                                         <div class="row">
                                             <div class="col-sm-11 pull-right">
-                                                <button class="btn btn-primary search-btn"><i class="icon-search"></i>&nbsp;&nbsp;&nbsp;&nbsp;Search</button>
+                                                <button onclick='ajaxFunction()' class="btn btn-primary search-btn"><i class="icon-search"></i>&nbsp;&nbsp;&nbsp;&nbsp;Search</button>
                                             </div>
                                         </div>
                                     </div>
@@ -136,13 +146,17 @@ if(isset($_SESSION['uid'])){
                                 </div>
                             </div>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
             
 
 <div class="container">
-
+<?php
+    include("config.php");
+    //$sql_op="S"
+ ?>
 
     <br />
     <div class="row">
@@ -174,41 +188,53 @@ if(isset($_SESSION['uid'])){
             <div class="panel panel-default">
                 <div class="panel-heading">Filters</div>
                 <div class="panel-body">
-                    <form class="form-inline mini" style="margin-bottom: 0px;">
+                    <form class="form-inline mini" method="POST" action="update.php" style="margin-bottom: 0px;">
                         <fieldset>              
 
                             <div class="row filter-row">
                                 <div class="col-sm-6">
-                                    <label>Make</label>
+                                    <label>Category</label>
                                 </div>
                                 <div class="col-sm-6">
-                                    <select class=" form-control ">
-                                        <option>Any</option>
-                                        <option>Alfa romeo</option>
-                                        <option>Houses</option>
-                                        <option>Flats/ Apartments</option>
-                                        <option>Bungalows</option>
-                                        <option>Land</option>
-                                        <option>Commercial property</option>
-                                        <option>Other</option>
+                                    <select class=" form-control" name="category">
+                                        <option>Choose</option>
+                                        <option value="1">Books</option>
+                                        <option value="2">Tools</option>
+                                        <option value="3">Electronics & Computer</option>
+                                        <option value="4">Services</option>
+                                        <option value="5">Jobs</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="row filter-row">
                                 <div class="col-sm-6">
-                                    <label>Mileage</label>
+                                    <label>Options</label>
                                 </div>
                                 <div class="col-sm-6">
-                                    <select class="col-sm-10 form-control ">
-                                        <option>Any</option>
-                                        <option>Alfa romeo</option>
-                                        <option>Houses</option>
-                                        <option>Flats/ Apartments</option>
-                                        <option>Bungalows</option>
-                                        <option>Land</option>
-                                        <option>Commercial property</option>
-                                        <option>Other</option>
+                                    <select class="col-sm-10 form-control" name="option">
+                                    <option>Choose</option>
+                                        <option value="1">Computer Science</option>
+                                        <option value="2">Infromation Technology</option>
+                                        <option value="3">Mechanical</option>
+                                        <option value="4">Electronics</option>
+                                        <option value="5">Extc </option>
+                                        <option value="6">Electrical</option>
+                                        <option value="7">Civil</option>
+                                        <option value="8">PRoduction</option>
+                                        <option value="20">Placement Books</option>
+                                        <option value="21">GRE &amp; other books</option>
+                                        <option value="9">WorkShoop Tools</option>
+                                        <option value="10">Drafters</option>
+                                        <option value="11">Other Tools</option>
+                                        <option value="12">Computer &amp; Accessories </option>
+                                        <option value="13">Camera &amp; Accessories</option>
+                                        <option value="14">Other Accessories</option>
+                                        <option value="15">Education &amp; Classes </option>
+                                        <option value="16">Web Development</option>
+                                        <option value="17">Electronics &amp; Computer Repair</option>
+                                        <option value="18">Other Services</option>
+                                        <option value="19">Internship </option>
                                     </select>
                                 </div>
                             </div>
@@ -218,21 +244,16 @@ if(isset($_SESSION['uid'])){
                                     <label>Seller type</label>
                                 </div>
                                 <div class="col-sm-6">
-                                    <select class="col-sm-10 form-control ">
+                                    <select class="col-sm-10 form-control" n>
                                         <option>Any</option>
-                                        <option>Alfa romeo</option>
-                                        <option>Houses</option>
-                                        <option>Flats/ Apartments</option>
-                                        <option>Bungalows</option>
-                                        <option>Land</option>
-                                        <option>Commercial property</option>
-                                        <option>Other</option>
+                                        <option value="New">New</option>
+                                        <option value="Used">Used</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="row filter-row">
+                            <!-- <div class="row filter-row">
                                 <div class="col-sm-6">
-                                    <label>Body type</label>
+                                    <label>City</label>
                                 </div>
                                 <div class="col-sm-6">
                                     <select class="col-sm-10 form-control ">
@@ -246,7 +267,7 @@ if(isset($_SESSION['uid'])){
                                         <option>Other</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="row filter-row">
                                 <div class="col-sm-12">
                                     <label>Price range</label>
@@ -272,7 +293,7 @@ if(isset($_SESSION['uid'])){
                                     <div class="radio">
                                         <label>
                                             <input type="radio" name="optionsRadios" value="option1" checked>
-                                            Urgent ads
+                                            New ads
                                         </label>
                                     </div><br />
 
@@ -283,22 +304,16 @@ if(isset($_SESSION['uid'])){
                                         </label>
                                     </div><br />
 
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="optionsRadios" value="option2">
-                                            Only ads with pictures
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
 
                             <div class="row filter-row">    
 
                                 <div class="col-sm-2 pull-right" style="margin-top: 10px;">
-                                    <button class="btn btn-primary pull-right" type="submit">Update results</button>
+                                    <button class="btn btn-primary pull-right" name="update" type="submit">Update results</button>
 
                                 </div>
-                            </div>                      
+                            </div>
 
 
                         </fieldset>
@@ -432,7 +447,7 @@ if(isset($_SESSION['uid'])){
             <!--  -->
         
 
-
+</div>
 
     </div>
 </div><!-- Modal -->

@@ -6359,7 +6359,8 @@ hr {
   background: #ffffff;
 }
 .directory i {
-  color: #79A618;
+  /*color: #79A618;*/
+    color:#2385E6;
 }
 .btn-default {
   background-image: -webkit-linear-gradient(top, #e6e6e6 0%, #cccccc 100%);

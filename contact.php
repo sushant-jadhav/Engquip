@@ -77,30 +77,14 @@
 
                             </div>	
                         </div>
-
-
-
-
                     </div>
-
                 </div>
                 </div>
-
-
-
-
-
             </nav>
-
-
-
-            
 
                         <hr class="topbar"/>
             <div class="container">
     <div class="row">
-
-
         <div class="col-md-12">
             <h1>Contact us</h1>
             <hr />
@@ -111,14 +95,8 @@
         <div class="col-md-8">
             <div class="row about-text">
 
-
                 <div class="col-md-12">
-
-
-
-
                     <div class="form-group">
-
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="row">
@@ -172,7 +150,7 @@
 
 
                     <h2 class="listings-top">Something urgent?</h2>
-                    <p>We prides ourselves in customer service excellence. Our customer service representatives are available Monday–Friday from 7 a.m.–7 p.m. CST at <strong>0800-555-5555</strong> or via direct support at <strong>example@example.com</strong></p>
+                    <p>We prides ourselves in customer service excellence. Our customer service representatives are available Monday–Friday from 9 a.m.–5 p.m. GMT at <strong>--</strong> or via direct support at <strong>support@enquip.com</strong></p>
 
                 </div>
 
@@ -185,21 +163,20 @@
 
         <div class="col-md-3 col-xs-12 pull-right">
 
-            <h2>Our Headquarters</h2>
-            928 Wolf Pen Road<br />
-            Concord, CA 94520<br />
-            London - United Kingdom<br />
-            Zip Code CA 94520<br />
+            <h2>office</h2>
+            <br />
+            Virar - Mumbai<br />
+            Pin Code 401303<br />
             <br />
             <br />
-            US: +650-430-1309<br />
-            UK: +44-430-1309<br />
+            India: --<br />
             <br />
-            <a href="mailto:info@example.com">info@example.com</a><br />
-            <a href="mailto:info@example.com">support@example.co.uk</a><br />			
+            <br />
+            <a href="mailto:info@example.com">info@enquip.com</a><br />
+            <br />			
             <br /><br />
             <h2>Business Hours</h2>
-            <strong>Weekday:</strong> 8am to 6pm<br />
+            <strong>Weekday:</strong> 9am to 6pm<br />
             <strong>Sunday:</strong> closed<br />
         </div>
     </div>
@@ -281,6 +258,7 @@
 
 <div class="footer">
     <div class="container">
+    
 
         <div class="row">
 

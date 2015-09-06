@@ -2,7 +2,8 @@
 include("config.php");
 $id = trim($_REQUEST['id']);
 $srch=$_GET['search'];
-$qry="SELECT ads.*,options.* FROM ads left join options on ads.opId=options.opId where ads.adHeading  like '%{$srch}%' ORDER BY adId asc LIMIT 5";
+$cat=$_GET['category'];
+$qry="SELECT ads.*,options.*,category.* FROM ads left join options on ads.opId=options.opId inner join category on options.cId=category.cId where ads.adHeading  like '%{$srch}%' and category.cName='$cat' ORDER BY adId asc LIMIT 5";
 $sql=mysql_query($qry,$connect);
 while($ad = mysql_fetch_object($sql))
 {

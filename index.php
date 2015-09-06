@@ -115,16 +115,14 @@ $username=$_SESSION['user'];
                                     <input type="text" class="form-control col-sm-3" name="search" placeholder="e.g. c by balaguruswami, GRE books ">
                                     <div class=" input-group-addon hidden-xs">
                                         <div class="btn-group" >
-                                            <button type="button"  class="btn  dropdown-toggle" data-toggle="dropdown">
-                                                All categories <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" name="category"  role="menu">
-                                                <li value="Books"><a >Books</a></li>
-                                                <li value="Tools"><a >Tools</a></li>
-                                                <li value="Electronics & Computer"><a >Electronics & Computer</a></li>
-                                                <li value="Services"><a >Services</a></li>
-                                                <li value="Jobs"><a >Jobs</a></li>
-                                            </ul>
+                                            <select class="btn dropdown-toggle" name="category">
+                                                <option>Choose Category</option>
+                                                <option value="Books">Books</option>
+                                                <option value="Tools">Tools</option>
+                                                <option value="Electronics & Computer">Electronics & Computer</option>
+                                                <option value="Services">Services</option>
+                                                <option value="Jobs">Jobs</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -460,6 +458,7 @@ $username=$_SESSION['user'];
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.flot.js"></script>
 <script src="js/dropzone.js"></script>
+<script src="js/filter.js"></script>
 
 <!-- Add fancyBox main JS and CSS files -->
 <script type="text/javascript" src="js/fancybox/jquery.fancybox.js"></script>

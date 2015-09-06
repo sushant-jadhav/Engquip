@@ -180,9 +180,10 @@ if(isset($_SESSION['uid'])){
 
                     <ol class="breadcrumb">
                         <li><a href="listings.php" class="link-info"><i class="fa fa-chevron-left"></i> Back to listings</a></li>
-                        <li><a href="#">Home</a></li>
+                        <li><a href="index.php">Home</a></li>
+                        <!-- <li ><?php echo $ad->opName;?></li> -->
                         <li class="active"><a href="#"><?php echo $ad->opName;?></a></li>
-                        <!-- <li >Cars</li> -->
+                         
                     </ol>
 
                 </div>
