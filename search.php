@@ -157,13 +157,16 @@ if(isset($_SESSION['uid'])){
 <div class="container">
 
     <br />
-    <div class="row">
+    <div class="row" id="bcrumb">
         <div class="col-sm-12">
             <ol class="breadcrumb">
                 <li><a href="index.php">Home</a></li>
-                <li><a href="#"><?php
+                <li id="catg"><a href="#"><?php
                                 if(isset($_GET['search'])){$srch=$_GET['search'];  }elseif (isset($_POST['term'])){$srch=$_POST['term'];$_SESSION['val']=$srch;$cat=$_POST['cat']; echo $cat; }?></a></li>
-                <!-- <li class="active">Cars</li> -->
+               <li id="catf"><a href="#"><?php
+                                if(isset($_POST['fcategory'])){$fc=$_POST['fcategory'];  }?></a></li>
+                
+               <!-- <li class="active">Cars</li> -->
                 <!-- <li class="active">4,699 results for <strong>"Cars"</strong> in London</li> -->
             </ol>
         </div>
@@ -180,24 +183,24 @@ if(isset($_SESSION['uid'])){
     <br />
     <div class="row ">
         <div class="col-sm-12 col-sm-offset-0">
-
+        <?php if(isset($_POST['category'])){$val=$_POST['category'];}?>
             <div class="panel panel-default">
-                <div class="panel-heading">Category<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span></div>
+                <div class="panel-heading" id="load">Category<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span></div>
                 <div class="panel-body">
-                    <form class="form-inline mini" style="margin-bottom: 0px;">
+                    <form class="form-inline mini" style="margin-bottom: 0px;" id="catform" method="POST">
                         <fieldset>
 
                              <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" id="book" name="Books" value="book"></label>
+                                    <label><input type="radio" id="checkbox"  name="category" value="1"></label>
                                 </div>
                                 <div class="checkbox">
-                                  <label>Books</label>
+                                  <label id="bs">Books</label>
                                 </div>
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" name="Tools" value=""></label>
+                                    <label><input type="radio" id="checkbox" name="category" value="2"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Tools</label>
@@ -205,7 +208,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" name="Tools" value=""></label>
+                                    <label><input type="radio" id="checkbox" name="category" value="3"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Electronics & computer</label>
@@ -213,7 +216,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" name="Tools" value=""></label>
+                                    <label><input type="radio" id="checkbox" name="category" value="4"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Services</label>
@@ -221,7 +224,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" name="Tools" value=""></label>
+                                    <label><input type="radio" id="checkbox" name="category" value="5"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Jobs</label>
@@ -237,17 +240,18 @@ if(isset($_SESSION['uid'])){
     </div>
 
 
+    
     <div class="row ">
         <div class="col-sm-12">
         <div class="panel panel-default">
             <div class="panel-heading">Options<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span></div>
                 <div class="panel-body" style="height: 150px;overflow-y: scroll;">
-                <form class="form-inline mini" style="margin-bottom: 0px;">
+                <form class="form-inline mini" style="margin-bottom: 0px;" method="POST" id="optionform">
                         <fieldset>
 
                              <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" onselect="ajaxFunction()" value="1"></label>
+                                    <label><input type="radio" id="checkbox" name="option" value="1"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Computer Science</label>
@@ -255,7 +259,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox"  value="2"></label>
+                                    <label><input type="radio" id="checkbox" name="option"  value="2"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Infromation Technology</label>
@@ -263,7 +267,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox"  value=""></label>
+                                    <label><input type="radio" id="checkbox" name="option" value=""></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Mechanical</label>
@@ -271,7 +275,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" value="4"></label>
+                                    <label><input type="radio" id="checkbox" name="option" value="4"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Electronics</label>
@@ -279,7 +283,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" value="5"></label>
+                                    <label><input type="radio" id="checkbox" name="option" value="5"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Extc</label>
@@ -287,7 +291,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" value="6"></label>
+                                    <label><input type="radio" id="checkbox" name="option" value="6"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Electrical</label>
@@ -295,7 +299,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" value="7"></label>
+                                    <label><input type="radio" id="checkbox" name="option" value="7"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Civil</label>
@@ -303,7 +307,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" value="8"></label>
+                                    <label><input type="radio" id="checkbox" name="option" value="8"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Production</label>
@@ -311,7 +315,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" value="20"></label>
+                                    <label><input type="radio" id="checkbox" name="option" value="20"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Placement Books</label>
@@ -319,7 +323,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" value="21"></label>
+                                    <label><input type="radio" id="checkbox" name="option" value="21"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>GRE Books & Others</label>
@@ -327,7 +331,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" value="9"></label>
+                                    <label><input type="radio" id="checkbox" name="option" value="9"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>WorkShoop Tools</label>
@@ -335,7 +339,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" value="10"></label>
+                                    <label><input type="radio" id="checkbox" name="option" value="10"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Drafters</label>
@@ -343,7 +347,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" value="12"></label>
+                                    <label><input type="radio" id="checkbox" name="option" value="12"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Computer & Accessories</label>
@@ -351,7 +355,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" value="13"></label>
+                                    <label><input type="radio" id="checkbox" name="option" value="13"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Camera & Accessories</label>
@@ -359,7 +363,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" value="15"></label>
+                                    <label><input type="radio" id="checkbox" name="option" value="15"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Classes</label>
@@ -367,7 +371,7 @@ if(isset($_SESSION['uid'])){
                             </div>
                             <div class="row filter-row">
                                 <div class="col-sm-3">
-                                    <label><input type="checkbox" value="16"></label>
+                                    <label><input type="radio" id="checkbox" name="option" value="16"></label>
                                 </div>
                                 <div class="checkbox">
                                   <label>Repair Stores</label>
@@ -383,7 +387,7 @@ if(isset($_SESSION['uid'])){
     <div class="row ">
         <div class="col-sm-12">
         <div class="panel panel-default">
-            <div class="panel-heading">Options<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span></div>
+            <div class="panel-heading">Types<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span></div>
                 <div class="panel-body">
                 <form class="form-inline mini" style="margin-bottom: 0px;">
                         <fieldset>
@@ -416,10 +420,11 @@ if(isset($_SESSION['uid'])){
     </div>
 </div>
 </div>
-        <div class="col-sm-9 pull-left listings">
+        <div class="col-sm-9 pull-left listings" id="main2">
             <div class="row listing-row" style="margin-top: -10px;">
                 <div class="pull-left">
                     <strong>Today, <?php echo date("d");?></strong>
+                    <?php //if(isset($_POST['fcategory'])){echo $_POST['fcategory'];}?>
                 </div>
                 <div class="pull-right">
                     <span style="">Sort by:&nbsp;&nbsp;&nbsp;</span>   
@@ -481,10 +486,12 @@ if(isset($_SESSION['uid'])){
             </div><?php }}
             if($nothing==0){echo "<br/><br/><center><b>NO result found</b></center>";}} ?>
             <?php
-
+        
             ?>
             <br/>
 
+        </div>
+        <div class="col-sm-9 pull-left listings" id="main">
         </div>
 
 
@@ -645,32 +652,113 @@ $(document).ready(function(){
     });
 </script>
 <script type="text/javascript">
-     function ajaxFunction(){
-               var ajaxRequest;  // The variable that makes Ajax possible!
-               try{
-                  // Opera 8.0+, Firefox, Safari
-                  ajaxRequest = new XMLHttpRequest();
-               }
-               catch (e){
-                  // Internet Explorer Browsers
-                  try{
-                     ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
-                  }
-                  catch (e) {
-                     try{
-                        ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
-                     }
-                     catch (e){
-                        // Something went wrong
-                        alert("Your browser broke!");
-                        return false;
-                     }
-                  }
-               }
-               
+$(document).ready(function(){
+    function makeRequest(radionButn) {
+        // /var fcategory = radionButn.serialize();
+        $.ajax({
+            url: 'search_category.php',
+            type: 'POST',
+            datatype: 'html',
+            data: {fcategory: radionButn},
+            success: function(data) {
+                    //alert("Success!");
+                        $("catg").hide();
+                     $("#main").html(data);
+                     $("#catf").show();
+                     //$("#bcrumb").hide();
+                     $("#main2").hide();
+            }, 
+            error : function() {
+                    alert("Something went wrong!");
             }
+        });
+
+    }
+
+    $('#catform input').on('change', function() {
+   var radionButn=$('input[name=category]:checked', '#catform').val();
+   if(radionButn){
+     //console.log(radionButn);
+     makeRequest(radionButn);
+   }
+});
+    $('#catform').submit(function(ev){
+    ev.preventDefault();
+    makeAjaxRequest();
+});
+    });
+</script>
+<!-- option script -->
+<script type="text/javascript">
+$(document).ready(function(){
+    function makeRequest(optionButn) {
+        // /var fcategory = radionButn.serialize();
+        $.ajax({
+            url: 'search_option.php',
+            type: 'POST',
+            datatype: 'html',
+            data: {fcategory: optionButn},
+            success: function(data) {
+                    //alert("Success!");
+                        $("catg").hide();
+                     $("#main").html(data);
+                     $("#catf").show();
+                     //$("#bcrumb").hide();
+                     $("#main2").hide();
+            }, 
+            error : function() {
+                    alert("Something went wrong!");
+            }
+        });
+
+    }
+
+    $('#optionform input').on('change', function() {
+   var optionButn=$('input[name=option]:checked', '#optionform').val();
+   if(optionButn){
+     //console.log(radionButn);
+     makeRequest(optionButn);
+   }
+});
+    $('#optionform').submit(function(ev){
+    ev.preventDefault();
+    makeAjaxRequest();
+});
+    });
 </script>
 
+<!-- end -->
+<!-- for category -->
+
+<script type="text/javascript">
+        $(document).ready(function(){             
+            function load()
+            {
+            var ID = $(".moreoption").attr("id");
+            if(ID)
+            {
+                $("#loader").show();
+                $.ajax({
+                type: 'POST',
+                url: 'search_filter_cat.php?option=<?php echo $fc;?>',
+                data: {id:ID},
+                cache: false,
+                success: function(html){
+                    $("#loader").hide();
+                    $("#more"+ID).before(html);
+                    $("#more"+ID).remove();
+                    }
+                });
+            }
+            }
+            
+            $(window).scroll(function () {
+            if ($(window).scrollTop() >= $(document).height() - $(window).height() - 5) {
+            load();
+            }
+        });
+            });
+</script>
 <!-- Add fancyBox main JS and CSS files -->
 <script type="text/javascript" src="js/fancybox/jquery.fancybox.js?v=2.1.5"></script>
 <script type="text/javascript" src="js/fancybox/helpers/jquery.fancybox-buttons.js?v=2.1.5"></script>

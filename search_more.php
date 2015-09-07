@@ -10,7 +10,7 @@ while($ad = mysql_fetch_object($sql))
 ?>
 <div class="col-sm-14 pull-left listings">
   <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row">  
-                <div class="ribbon-wrapper-red"><div class="ribbon-red">&nbsp;<span>Featured<?php echo $srch;?></span></div></div>
+                <!-- <div class="ribbon-wrapper-red"><div class="ribbon-red">&nbsp;<span>Featured</span></div></div> -->
                                 <div class="col-sm-2">
                     <a href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>" class="thumbnail " ><img alt="176 * 120" src="<?php echo $ad->adImg1;?>"></a>
                 </div>
