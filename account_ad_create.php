@@ -70,12 +70,14 @@ $username=$_SESSION['user'];
                             <div class="pull-right">
 
 
-                                <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>Login</a> | <a href='register.php'>Register</a> | ";}
-                            else {echo "<a href='logout.php'>logout</a> | ";} ?> 
-                                <!-- <a href="register.php">Register</a> | 
-                                <a href="listings.php">Listings</a> |  -->
-                                 <a href="account_dashboard.php"><?php if(!isset($uid)){echo "My Account"; }else{echo "Welcome,",$username;}?></a>
-                                <a href="account_ad_create.php" class="btn btn-default post-ad-btn">Post an ad</a>
+                                <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>Login</a> | ";}
+                            else {echo "<a href='logout.php'>logout</a> | ";} ?>
+                                <!-- <a href="register.php">New Register</a> |  -->
+                                <a href="listings.php">Listings</a> | 
+                                 <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>My Account</a> ";}
+                            else {echo "<a href='account_dashboard.php'>Welcome, $username</a>  ";} ?>
+                                <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalpost'  href='#' class='btn btn-primary post-ad-btn'>Post an ad</a>";}
+                                else{echo "<a href='account_ad_create.php' class='btn btn-primary post-ad-btn'>Post an ad</a>";}?>
 
                             </div>	
                         </div>
@@ -214,11 +216,11 @@ $username=$_SESSION['user'];
 
                                         </div>
                                     </div>
-                                </div>			
+                                </div>          
 
-                            </div>			
-                        </div>			
-                    </div>			
+                            </div>          
+                        </div>          
+                    </div>          
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">Ad details</div>
@@ -260,20 +262,32 @@ $username=$_SESSION['user'];
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-sm-6">
+                                    <label>Name</label>
+                                    <input type="text" name="adname" class="form-control " required >
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Email</label>
+                                    <input type="email" name="ademail" id="city" class="form-control" required >
+                                </div>
+                                <div class="col-sm-6"><br />
+                                    <label>College</label>
+                                    <input type="text" name="college" class="form-control "  >
+                                </div>
+                                <div class="col-sm-6"><br />
+                                    <label>Contact No:</label>
+                                    <input type="number" name="city" id="phone" class="form-control"  >
+                                </div>
+                                <div class="col-sm-6"><br />
                                     <label>Region</label>
                                     <input type="text" name="region" class="form-control "  >
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-6"><br />
                                     <label>City</label>
                                     <input type="text" name="city" id="city" class="form-control"  >
                                 </div>
                                 <div class="col-sm-6"><br />
-                                    <label>Country</label>
-                                    <select id="type" name="country" class="form-control">
-                                            <option selected="selected">Select country</option>
-                                            <option>India</option>
-                                            
-                                          </select>
+                                    <label>Address</label>
+                                    <input type="text" name="address" id="city" class="form-control"  >
                                 </div>
                                 <div class="col-sm-6"><br />
                                     <label>Pin Code</label>
@@ -325,7 +339,7 @@ $username=$_SESSION['user'];
                             </div>
                         </div>
                     </div>
-                </div>	
+                </div>  
 
                 <div class="panel panel-default">
                     <div class="panel-heading">Complete ad</div>
@@ -336,11 +350,11 @@ $username=$_SESSION['user'];
                             </label>
                         </div>
                         <br />
-                        <button type="" class="btn btn-default hidden-xs">Save draft</button>
-                        <button type="" class="btn btn-default hidden-xs">Preview ad</button>
+                        <!-- <button type="" class="btn btn-default hidden-xs">Save draft</button>
+                        <button type="" class="btn btn-default hidden-xs">Preview ad</button> -->
                         <!-- <button class="btn btn-primary pull-right" type="submit" name="submit"><i class="icon-ok"></i>  Publish ad</button> -->
-                        <?php if(!isset($uid)){echo "<button class='btn btn-primary pull-right' data-toggle='modal' data-target='#modalLogin'><i class='icon-ok'></i>  Publish ad</button>" ;}
-                            else {echo "<button class='btn btn-primary pull-right' type='submit' name='submit'><i class='icon-ok'></i>  Publish ad</button>";} ?>
+                        <?php if(!isset($uid)){echo "<button class='btn btn-primary pull-right' type='submit' name='submit><i class='icon-ok'></i>  Publish ad</button>" ;}
+                            else {echo "<button class='btn btn-primary pull-left' type='submit' name='submit'><i class='icon-ok'></i>  Publish ad</button>";} ?>
                         <br /><p class=" hidden-xs" style="text-align: right"><small><br /> </small></p>
                     </div>
                 </div>
@@ -355,7 +369,6 @@ $username=$_SESSION['user'];
 </div>
 </form>
 <br />
-
 </div>
 </div><!-- Modal -->
 <div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="modalLogin" aria-hidden="true">
@@ -368,17 +381,19 @@ $username=$_SESSION['user'];
             <div class="modal-body">
                 <p>If you have an account with us, please enter your details below.</p>
 
-                <form method="POST" action="account_dashboard.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
+                <form method="POST" action="login.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
 
                     <div class="form-group">
-                        <input placeholder="Your username/email" class="form-control" name="email" type="text">                </div>
+                        <input placeholder="Your username/email" class="form-control" name="email" type="text" value="<?php if(isset($_COOKIE['username'])) echo $_COOKIE['username']; ?>">
+                    </div>
 
                     <div class="form-group">
-                        <input placeholder="Your password" class="form-control" name="password" type="password" value="">                </div>
+                        <input placeholder="Your password" class="form-control" name="password" type="password" value="<?php if(isset($_COOKIE['password'])) echo $_COOKIE['password']; ?>">
+                    </div>
 
                     <div class="row">
                         <div class="col-md-6">
-
+                            <input type="checkbox" id="remember_me" name="remember_me" <?php if(isset($_COOKIE['username'])){echo "checked='checked'"; } ?> value="1" /> <label for="remember_me"> Remember Me </label>
                         </div>
                         <div class="col-md-6">
                             <button type="submit" name="sub" class="btn btn-primary pull-right">Login</button>

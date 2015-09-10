@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -17,7 +16,7 @@
         <!-- Custom styles for this template -->
         <link href="css/theme.css" rel="stylesheet">
         <link href="css/dropzone.css" rel="stylesheet">
-        <link href="css/font-awesome.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
         <link rel="stylesheet" type="text/css" href="js/fancybox/helpers/jquery.fancybox-buttons.css?v=2.1.5" media="screen" />
         
@@ -40,8 +39,8 @@
                     </button>
 
                     <a href="index.php" class="navbar-brand ">
-                        <span class="logo"><strong>enquip</strong><span class="handwriting">Ads</span><br />
-                            <small >a minimalist theme built with bootstrap </small></span>
+                        <span class="logo"><strong>engquip </strong><span class="handwriting"></span><br />
+                            <small >A Classifieds Ads for engg. students </small></span>
                     </a>
                 </div>
                 <div class="collapse navbar-collapse">
@@ -60,9 +59,9 @@
                             <div class="pull-right">
                                 <a data-toggle="modal" data-target="#modalLogin"  href="#">Login</a> |
                                 <a href="register.php">Register</a> |
-                                <a href="listings.php">Listings</a> |
+                                <!-- <a href="listings.php">Listings</a> | -->
                                 <!-- <a href="account_dashboard.php">My account</a> -->
-                                <a href="account_ad_create.php" class="btn btn-default post-ad-btn">Post an ad</a>
+                                <a href="post_ad.php" class="btn btn-primary post-ad-btn">  Post an ad</a>
 
                             </div>	
                         </div>
@@ -77,7 +76,7 @@
 
         <div class="col-sm-12">
             <h1>Create an account</h1>
-
+            <div><?php if(isset($message)){echo $message;}?></div>
             <hr />
             <div class="row">
                 <div class="col-sm-12 col-md-6">
@@ -101,10 +100,10 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-sm-4">
-                                                    <input type="text" class="form-control" name="firstname" id="exampleInputEmail1" placeholder="First name">
+                                                    <input type="text" class="form-control" name="firstname" id="exampleInputEmail1" placeholder="First name" required>
                                                 </div>
                                                 <div class="col-sm-5">
-                                                    <input type="text" class="form-control" name="lastname" id="exampleInputEmail1" placeholder="Last name">
+                                                    <input type="text" class="form-control" name="lastname" id="exampleInputEmail1" placeholder="Last name" required>
                                                 </div>
                                             </div>
 
@@ -113,15 +112,15 @@
 
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Email address</label>
-                                            <input type="email" class="form-control" name="email" id="exampleInputEmail1" placeholder="Enter email">
+                                            <input type="email" class="form-control" name="email" id="exampleInputEmail1" placeholder="Enter email" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputPassword1">Password</label>
-                                            <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Make sure your password is longer than 6 characters">
+                                            <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Make sure your password is longer than 6 characters" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputPassword1">Contact Number</label>
-                                            <input type="tel" class="form-control" name="phone" id="exampleInputPassword1" placeholder="Enter Your Contact number">
+                                            <input type="tel" class="form-control" name="phone" id="exampleInputPassword1" placeholder="Enter Your Contact number" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputPassword1">College</label>
@@ -130,8 +129,11 @@
 
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox"> We can contact you with relevant properties, offers and news
+                                                <input type="checkbox" name='term'> We can contact you with relevant properties, offers and news
                                             </label>
+                                            
+                                            <?php if(isset($msg)) { ?>
+                                            <span class='msg'><?php echo $msg; }?></span>
                                         </div>
                                         <br />
                                         <!-- <a href="account_dashboard.php" class="btn btn-primary">Create account</a> -->
@@ -191,12 +193,6 @@
 
                     </div>
                     <br />
-
-
-
-
-
-
                 </fieldset>
             </form>
 
@@ -219,20 +215,22 @@
             <div class="modal-body">
                 <p>If you have an account with us, please enter your details below.</p>
 
-                <form method="POST" action="account_dashboard.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
+                <form method="POST" action="login.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
 
                     <div class="form-group">
-                        <input placeholder="Your username/email" class="form-control" name="email" type="text">                </div>
+                        <input placeholder="Your username/email" class="form-control" name="email" type="text" value="<?php if(isset($_COOKIE['username'])) echo $_COOKIE['username']; ?>">
+                    </div>
 
                     <div class="form-group">
-                        <input placeholder="Your password" class="form-control" name="password" type="password" value="">                </div>
+                        <input placeholder="Your password" class="form-control" name="password" type="password" value="<?php if(isset($_COOKIE['password'])) echo $_COOKIE['password']; ?>">
+                    </div>
 
                     <div class="row">
                         <div class="col-md-6">
-
+                            <input type="checkbox" id="remember_me" name="remember_me" <?php if(isset($_COOKIE['username'])){echo "checked='checked'"; } ?> value="1" /> <label for="remember_me"> Remember Me </label>
                         </div>
                         <div class="col-md-6">
-                            <button type="submit" class="btn btn-primary pull-right">Login</button>
+                            <button type="submit" name="sub" class="btn btn-primary pull-right">Login</button>
                         </div>
                     </div>
 
@@ -252,7 +250,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 
 <!-- Modal -->
 <div class="modal fade" id="modalForgot" tabindex="-1" role="dialog" aria-labelledby="modalForgot" aria-hidden="true">
@@ -311,7 +308,7 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="js/jquery-1.10.1.min.js"></script>
-<script src="js/bootstrap.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.flot.js"></script>
 <script src="js/dropzone.js"></script>
 

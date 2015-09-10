@@ -100,5 +100,3 @@ while($ad = mysql_fetch_object($sql))
 <a>No record...</a>
 </div>
 <?php } }?>
-
-

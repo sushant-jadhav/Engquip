@@ -2,7 +2,7 @@
                 <div class="pull-left">
                     <strong>Today, <?php echo date("d");?></strong>
                     <!-- <strong id="se"></strong> -->
-                    <?php if(isset($_POST['fcategory'])){ $fc=$_POST['fcategory'];}?>
+                    <?php if(isset($_POST['fcategory'])){}?>
                 </div>
                 <div class="pull-right">
                     <span style="">Sort by:&nbsp;&nbsp;&nbsp;</span>   
@@ -13,13 +13,15 @@
 
                 <?php if(isset($_POST['fcategory'])){
                     include("config.php");
+                    $fc=trim($_POST['fcategory']);
+                    $fc=mysqli_real_escape_string($connect,$fc);
                     //$sql="SELECT ads.*,options.* FROM ads inner join options on ads.opId=options.opId where ads.adHeading like '%".$srch."%'  ";
              $e="SELECT ads.*,options.*,category.* FROM ads left join options on ads.opId=options.opId inner join category on options.cId=category.cId where options.opId=$fc order by adId desc limit 5";
-             $q = mysql_query($e,$connect);
-             $nothing=mysql_num_rows($q);
+             $q = mysqli_query($connect,$e);
+             $nothing=mysqli_num_rows($q);
              if($nothing>0){
             //while($row = mysql_fetch_assoc($q)){
-                while($ad = mysql_fetch_object($q)){
+                while($ad = mysqli_fetch_object($q)){
             $id = $ad->adId;
             ?>
 
@@ -53,14 +55,14 @@
                 </div>
             </div>
             <?php }
-            if(mysql_num_rows($q)>0){?>
+            if(mysqli_num_rows($q)>0){?>
             <div id="more<?php echo $id; ?>" class="pmc_loadbox">
             <a href="#" id="<?php echo $id; ?>" class="moreoption" style="margin-left:200px">Loading..</a>
             <img src="image/loading.gif" id="loader" style="display:none">
             </div>
             <?php } else { ?>
             <div id="more" class="pmc_loadbox">
-            <a href="#" id="" class="more"></a>
+            <a href="#" id="" class="moreoption"></a>
             </div><?php }}
             if($nothing==0){echo "<br/><br/><center><b>NO result found</b></center>";}} ?>
             <?php

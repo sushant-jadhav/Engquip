@@ -1,9 +1,19 @@
 <?php 
 session_start();
-if(isset($_SESSION['uid'])){
-$uid=$_SESSION['uid'];
-$username=$_SESSION['user'];
+if(!isset($_SESSION['uid'])){
+    if(!isset($_COOKIE['uniqueID'])){
+       //setcookie("name", $value, time()+3600, "/","", 0);
+       setcookie("uniqueID", uniqid(), time()+3600, "/", "",  0);}
+       if(isset($_COOKIE['uniqueID'])){$cid=$_COOKIE['uniqueID'];}
+       else{
+        $cid=openssl_random_pseudo_bytes(16);
+        $cid=bin2hex($cid);
+       }
 }
+elseif(isset($_SESSION['uid'])){
+    $uid=$_SESSION['uid'];
+    $username=$_SESSION['user'];
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,7 +66,7 @@ $username=$_SESSION['user'];
                     </button>
 
                     <a href="index.php" class="navbar-brand ">
-                        <span class="logo"><strong>  enquip</strong><span class="handwriting">Ads</span><br />
+                        <span class="logo"><strong>  engquip</strong><span class="handwriting"></span><br />
                             <small >A classified ads for engg. students </small></span>
                     </a>
                 </div>
@@ -74,16 +84,15 @@ $username=$_SESSION['user'];
                         <div class="row">
 
                             <div class="pull-right">
-                            <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>Login</a> | <a href='register.php'>Register</a> | ";}
+                            <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>Login</a> |  ";}
                             else {echo "<a href='logout.php'>logout</a> | ";} ?>
-                                <!-- <a href="register.php">Register</a> |  -->
-                                <!-- <a href="listings.php">Listings</a> |  -->
+                            <!-- <a href="#" class="">Wishlist <span class="badge">0</span></a> | -->
                                 <!-- <a href="account_dashboard.php"><?php if(!isset($uid)){echo "My Account"; }else{echo "Welcome,",$username;}?></a> -->
                                 <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>My Account</a> ";}
                             else {echo "<a href='account_dashboard.php'>Welcome, $username</a>  ";} ?>
                                 <!-- <a href="account_ad_create.php" class="btn btn-warning post-ad-btn">Post an ad</a> -->
-                                <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalpost'  href='#' class='btn btn-warning post-ad-btn'>Post an ad</a>";}
-                                else{echo "<a href='account_ad_create.php' class='btn btn-warning post-ad-btn'>Post an ad</a>";}?>
+                                <?php if(!isset($uid)){echo "<a href='post_ad.php' class='btn btn-primary post-ad-btn'>Post an ad</a>";}
+                                else{echo "<a href='account_ad_create.php' class='btn btn-primary post-ad-btn'>Post an ad</a>";}?>
 
                             </div>  
                         </div>
@@ -96,15 +105,14 @@ $username=$_SESSION['user'];
     <div class="container">
         <div class="row">
         <?php if(isset($_GET['search'])){ $srch= $_GET['search'];}else{$srch=null;}?>
-        <?php if(isset($_GET['category'])){$cat=$_GET['category'];}?>
-        <form method="GET" action="search.php?search=<?php echo $srch;?>">
+        <?php if(isset($_GET['category'])){$cat=$_GET['category'];}else{$cat=null;}?>
+        <form method="GET" action="search.php?search=<?php echo $srch;?>&category=<?php echo $cat;?>">
             <div class="col-sm-12">
                 <br />
-                <p class="main_description">Search thousands of Enginnering books, accessories, tools and other classifieds all in one place</p>
+                <p class="main_description">Search thousands of Enginnering books, accessories, tools and other classifieds all in one place<?php if(isset($_COOKIE['uniqueID'])){ $cid=$_COOKIE['uniqueID'];}?></p>
 
                 <br /><br />
                 <div class="row">
-                    
                     <div class="col-sm-8 col-sm-offset-2" style="text-align: center">
                         <div class="row">
 
@@ -112,11 +120,11 @@ $username=$_SESSION['user'];
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-addon-text">Find me a</span>
 
-                                    <input type="text" class="form-control col-sm-3" name="search" placeholder="e.g. c by balaguruswami, GRE books ">
+                                    <input type="text" class="form-control col-sm-3" name="search" placeholder="e.g. c by balaguruswami, GRE books" required/>
                                     <div class=" input-group-addon hidden-xs">
                                         <div class="btn-group" >
                                             <select class="btn dropdown-toggle" name="category">
-                                                <option>Choose Category</option>
+                                                <option value="All">Choose Category</option>
                                                 <option value="Books">Books</option>
                                                 <option value="Tools">Tools</option>
                                                 <option value="Electronics & Computer">Electronics & Computer</option>
@@ -250,7 +258,7 @@ $username=$_SESSION['user'];
 
                         <ul class="list-group">
                             <li class="list-group-item"><a href="typography.php">Our tips to stay safe</a></li>
-                            <li class="list-group-item"><a href="typography.php">How to buy guide</a></li>
+                            <!-- <li class="list-group-item"><a href="typography.php">How to buy guide</a></li> -->
                             <li class="list-group-item"><a href="typography.php">How to sell guide</a></li>
                             <li class="list-group-item"><a href="typography.php">Help and contact us</a></li>
                             <li class="list-group-item"><a href="typography.php">Frequently asked questions</a></li>
@@ -288,9 +296,13 @@ $username=$_SESSION['user'];
                             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                         </div>
                     </div>
+                    <?php 
+                    include("config.php");
+                    $query_count="SELECT";
 
+                    ?>
                     <p class="main_slogan" style="margin: 28px 0">Currently listing 355,785 classified ads in the Mumbai.</p>
-
+                     <?php ?>
                 </div>
 
 
@@ -397,6 +409,45 @@ $username=$_SESSION['user'];
 </div><!-- /.modal -->
 
 <!-- End post ads -->
+<?php 
+if(isset($_POST['femail'])){
+    include("config.php");
+    $femail=mysqli_real_escape_string($connect,$_POST['femail']);
+    if (!filter_var($femail, FILTER_VALIDATE_EMAIL)) // Validate email address
+    {
+        $message =  "Invalid email address please type a valid email!!";
+    }
+     else
+    {
+        include("config.php");
+        $query = "SELECT uId FROM users where uEmail='".$femail."'";
+        $result = mysqli_query($connect,$query);
+        $Results = mysqli_fetch_array($result);
+ 
+        if(count($Results)>=1)
+        {
+            $encrypt = md5(1290*3+$Results['uId']);
+            $message = "Your password reset link send to your e-mail address.";
+            $to=$email;
+            $subject="Forget Password";
+            $from = 'info@engquip.com';
+            $body='Hi, <br/> <br/>Your Membership ID is '.$Results['uId'].' <br><br>Click here to reset your password http://demo.phpgang.com/login-signup-in-php/reset.php?encrypt='.$encrypt.'&action=reset   <br/> <br/>--<br>PHPGang.com<br>Solve your problems.';
+            $headers = "From: " . strip_tags($from) . "\r\n";
+            $headers .= "Reply-To: ". strip_tags($from) . "\r\n";
+            $headers .= "MIME-Version: 1.0\r\n";
+            $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+ 
+            mail($to,$subject,$body,$headers);
+            // echo"<script>window.open('index.php','_self')</script>";
+        }
+        else
+        {
+            $message = "Account not found please signup now!!";
+            // echo"<script>window.open('register.php','_self')</script>";
+        }
+    }
+}
+?>
 
 <!-- Modal -->
 <div class="modal fade" id="modalForgot" tabindex="-1" role="dialog" aria-labelledby="modalForgot" aria-hidden="true">
@@ -409,20 +460,20 @@ $username=$_SESSION['user'];
             <div class="modal-body">
                 <p>Enter your email to continue</p>
 
-                <form role="form">
+                <form role="form" method="post">
                     <div class="form-group">
-                        <input type="email" class="form-control" placeholder="Your email address">
+                        <input type="email" name="femail" class="form-control" placeholder="Your email address">
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
 
                         </div><div class="col-md-6">
-                        <a href="my_account.php" class="btn btn-primary pull-right">Continue</a>
+                        <button type="submit" class="btn btn-primary pull-right fbtn">Continue</a>
                         </div>
                     </div>
                 </form>
-
+                <div id="showit"><?php if(isset($message)){echo $message;}?></div>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -459,6 +510,14 @@ $username=$_SESSION['user'];
 <script src="js/jquery.flot.js"></script>
 <script src="js/dropzone.js"></script>
 <script src="js/filter.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#showit").hide();
+        $(".fbtn").click(function(){
+            $("#showit").show();
+        });
+    });
+</script>
 
 <!-- Add fancyBox main JS and CSS files -->
 <script type="text/javascript" src="js/fancybox/jquery.fancybox.js"></script>

@@ -1,4 +1,8 @@
-<?php session_start();
+<?php 
+session_start();
+if(isset($_COOKIE['uniqueID'])){
+    $cid=$_COOKIE['uniqueID'];
+   }
 if(isset($_SESSION['uid'])){
  $uid=$_SESSION['uid'];
  $username=$_SESSION['user'];
@@ -68,13 +72,14 @@ if(isset($_SESSION['uid'])){
                         <div class="row">
 
                             <div class="pull-right">
-
-                                <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>Login</a> | <a href='register.php'>Register</a> | ";}
+                            <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>Login</a> | <a href='register.php'>Register</a> | ";}
                             else {echo "<a href='logout.php'>logout</a> | ";} ?>
-                                <!-- <a href="register.php">Register</a> | 
-                                <a href="listings.php">Listings</a> |  -->
-                                <a href="account_dashboard.php"><?php if(!isset($uid)){echo "My Account"; }else{echo "Welcome,",$username;}?></a>
-                                <a href="account_ad_create.php" class="btn btn-default post-ad-btn">Post an ad</a>
+                                <!-- <a href="account_dashboard.php"><?php if(!isset($uid)){echo "My Account"; }else{echo "Welcome,",$username;}?></a> -->
+                                <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>My Account</a> ";}
+                            else {echo "<a href='account_dashboard.php'>Welcome, $username</a>  ";} ?>
+                                <!-- <a href="account_ad_create.php" class="btn btn-warning post-ad-btn">Post an ad</a> -->
+                                <?php if(!isset($uid)){echo "<a href='post_ad.php' class='btn btn-primary post-ad-btn'>Post an ad</a>";}
+                                else{echo "<a href='account_ad_create.php' class='btn btn-primary post-ad-btn'>Post an ad</a>";}?>
 
                             </div>  
                         </div>
@@ -87,8 +92,8 @@ if(isset($_SESSION['uid'])){
                 <div class="container">
                     <div class="row">
                         <?php if(isset($_GET['search'])){ $srch= $_GET['search'];}else{$srch=null;}?>
-                        <?php if(isset($_GET['category'])){$cat=$_GET['category'];}?>
-                        <form method="GET" action="search.php?search=<?php echo $srch;?>">
+                        <?php if(isset($_GET['category'])){$cat=$_GET['category'];}else{$cat=null;}?>
+                        <form method="GET" action="search.php?search=<?php echo $srch;?>&category=<?php echo $cat;?>">
                         <div class="col-sm-12">
                             <div class="home-tron-search-inner">
 
@@ -104,17 +109,7 @@ if(isset($_SESSION['uid'])){
                                                     <input type="text" class="form-control col-sm-3" name="search" placeholder="e.g. BMW, 2 bed flat, sofa ">
                                                     <div class=" input-group-addon hidden-xs">
                                                         <div class="btn-group" >
-                                                            <!-- <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown">
-                                                                All categories <span class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu" role="menu">
-                                                                <li><a><option>Books</option></a></li>
-                                                                <li><a><option>Tools</option></a></li>
-                                                                <li><a><option>Electronics & Computer</option></a></li>
-                                                                <li><a><option>Services</option></a></li>
-                                                                <li><a><option>Jobs</option></a></li>
-                                                            </ul> -->
-                                                            <select class="btn dropdown-toggle">
+                                                            <select class="btn dropdown-toggle" name="category">
                                                                 <option>Choose Category</option>
                                                                 <option value="Books">Books</option>
                                                                 <option value="Tools">Tools</option>
@@ -154,26 +149,30 @@ if(isset($_SESSION['uid'])){
 
 <div class="container">
 <?php
-    include("config.php");
-    //$sql_op="S"
+    if(isset($opid)){
+        include("config.php");
+        $sql="SELECT ads.*,users.*,options.* FROM ads left join users on ads.uId=users.uId left join options on ads.opId=options.opId where ads.opId=$opid ";
+        $result_ads = mysqli_query($connect,$sql);
+        $ad=mysqli_fetch_array($result_ads);
+        $option=$ad['opName'];
  ?>
 
     <br />
     <div class="row">
         <div class="col-sm-12">
             <ol class="breadcrumb">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Vehicles</a></li>
-                <li class="active">Cars</li>
+                <li><a href="index.php">Home</a></li>
+                <li class="active"><a href="listings.php?opId=<?php echo $opid;?>"><?php echo $option;?></a></li>
+                <!-- <li class="active">Cars</li> -->
                 <!-- <li class="active">4,699 results for <strong>"Cars"</strong> in London</li> -->
             </ol>
         </div>
     </div>
-
+<?php }?>
 
 
     <div class="row">
-    <div class="col-sm-4  hidden-xs">
+    <!-- <div class="col-sm-4  hidden-xs">
             <div class="sidebar ">      
     <div class="row ">
 
@@ -251,23 +250,6 @@ if(isset($_SESSION['uid'])){
                                     </select>
                                 </div>
                             </div>
-                            <!-- <div class="row filter-row">
-                                <div class="col-sm-6">
-                                    <label>City</label>
-                                </div>
-                                <div class="col-sm-6">
-                                    <select class="col-sm-10 form-control ">
-                                        <option>Any</option>
-                                        <option>Alfa romeo</option>
-                                        <option>Houses</option>
-                                        <option>Flats/ Apartments</option>
-                                        <option>Bungalows</option>
-                                        <option>Land</option>
-                                        <option>Commercial property</option>
-                                        <option>Other</option>
-                                    </select>
-                                </div>
-                            </div> -->
                             <div class="row filter-row">
                                 <div class="col-sm-12">
                                     <label>Price range</label>
@@ -340,8 +322,9 @@ if(isset($_SESSION['uid'])){
         <div class="col-sm-11">
         </div>
     </div>
-</div>        </div>
-        <div class="col-sm-8 pull-left listings">
+</div>        
+</div> -->
+        <div class="col-sm-12 pull-left listings">
             <div class="row listing-row" style="margin-top: -10px;">
                 <div class="pull-left">
                     <strong>Today, <?php echo date("d");?></strong>
@@ -353,19 +336,16 @@ if(isset($_SESSION['uid'])){
                 </div>
             </div>
             <?php if(isset($opid)){
-            $dbhost = "localhost";
-                    $dbuser = "root";
-                    $dbpass = "";
-                    $dbcon = mysql_connect($dbhost,$dbuser,$dbpass);
-                    mysql_select_db('classifiedads',$dbcon);
+                    include("config.php");
                     $sql="SELECT ads.*,users.*,options.* FROM ads left join users on ads.uId=users.uId left join options on ads.opId=options.opId where ads.opId=$opid ";
-               $result_ads = mysql_query($sql,$dbcon);
-                while($ad = mysql_fetch_object($result_ads)){
+               $result_ads = mysqli_query($connect,$sql);
+                while($ad = mysqli_fetch_object($result_ads)){
+                    $id = $ad->adId;
 
             ?>
 
                 <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row">
-                <div class="ribbon-wrapper-red"><div class="ribbon-red">&nbsp;<span>Featured</span></div></div>
+                <!-- <div class="ribbon-wrapper-red"><div class="ribbon-red">&nbsp;<span>Featured</span></div></div> -->
                                 <div class="col-sm-2">
                     <a href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>" class="thumbnail " ><img alt="176 * 120" src="<?php echo $ad->adImg1;?>"></a>
                 </div>
@@ -386,29 +366,29 @@ if(isset($_SESSION['uid'])){
                     </p>
                     <p>
                         <span class="classified_links pull-right">
-                            <a class="link-info underline" href="#">Share</a>&nbsp;
-                            <a class="link-info underline" href="#">Add to favorites</a>
-                            &nbsp;<a class="link-info underline" href="details.php">Details</a>&nbsp;
-                            &nbsp;<a class="link-info underline" href="#">Contact</a></span>
+                            <!-- <a class="link-info underline" href="#">Share</a>&nbsp;
+                            <a class="link-info underline" href="#">Add to favorites</a> -->
+                            &nbsp;<a class="link-info " href="details.php">Details</a>&nbsp;|
+                            &nbsp;<a class="link-info " href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>">Contact</a></span>
                     </p>
                 </div>
             </div>
-            <?php }}else{?>
+            <?php }if(mysqli_num_rows($result_ads)>0){?>
+            <div id="more<?php echo $id; ?>" class="pmc_loadbox">
+            <a href="#" id="<?php echo $id; ?>" class="more" style="margin-left:200px">Loading..</a>
+            <img src="image/loading.gif" id="loader" style="display:none">
+            </div>
+            <?php } else { ?>
+            <div id="more" class="pmc_loadbox">
+            <a href="#" id="" class="more"></a>
+            </div><?php }}
+            else{?>
             <?php
-             $dbhost = "localhost";
-                    $dbuser = "root";
-                    $dbpass = "";
-                    $dbcon = mysql_connect($dbhost,$dbuser,$dbpass);
-                    mysql_select_db('classifiedads',$dbcon);
-              //$sql="select ads.* , options.* from ads
-                //      inner join options
-                  //    on ads.opId=options.opId
-                    //  where ads.opId=$opid";
+                include("config.php");
                     $sql="SELECT ads.*,users.*,options.* FROM ads left join users on ads.uId=users.uId inner join options on ads.opId=options.opId ";
-               $result_ads = mysql_query($sql,$dbcon);
-                while($ad = mysql_fetch_object($result_ads)){
-              
-
+               $result_ads = mysqli_query($sql,$dbcon);
+                while($ad = mysqli_fetch_object($result_ads)){
+                    $id = $ad->adId;
             ?>
 
                 <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row">
@@ -423,13 +403,13 @@ if(isset($_SESSION['uid'])){
                     <p class="muted">Posted <?php echo $ad->adDate;?> to <a href="#" class="underline"><?php echo $ad->opName;?></a></p>
                     <p><?php echo $ad->adText;?>...</p>
                     <p class="ad-description">
-                        <strong>2006</strong> | 
+                        <strong>2006</strong> |
 
-                        <strong>98,000 miles</strong> | 
+                        <strong>98,000 miles</strong> |
 
-                        <strong>2,696 cc</strong> | 
+                        <strong>2,696 cc</strong> |
 
-                        <strong>Diesel</strong>                
+                        <strong>Diesel</strong>
                     </p>
                     <p>
                         <span class="classified_links pull-right">
@@ -439,9 +419,18 @@ if(isset($_SESSION['uid'])){
                             &nbsp;<a class="link-info underline" href="#">Contact</a></span>
                     </p>
                 </div>
+            </div><?php }
+            if(mysqli_num_rows($result_ads)>0){?>
+            <div id="more<?php echo $id; ?>" class="pmc_loadbox">
+            <a href="#" id="<?php echo $id; ?>" class="more" style="margin-left:200px">Loading..</a>
+            <img src="image/loading.gif" id="loader" style="display:none">
+            </div>
+            <?php } else { ?>
+            <div id="more" class="pmc_loadbox">
+            <a href="#" id="" class="more"></a>
             </div><?php }}
 
-            $nothing=mysql_num_rows($result_ads);if($nothing==0){echo "<br/><br/><center><b>NO result found</b></center>";?>
+            $nothing=mysqli_num_rows($result_ads);if($nothing==0){echo "<br/><br/><center><b>NO result found</b></center>";?>
             <?php }?>
             <br/>
             <!--  -->
@@ -461,20 +450,22 @@ if(isset($_SESSION['uid'])){
             <div class="modal-body">
                 <p>If you have an account with us, please enter your details below.</p>
 
-                <form method="POST" action="account_dashboard.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
+                <form method="POST" action="login.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
 
                     <div class="form-group">
-                        <input placeholder="Your username/email" class="form-control" name="email" type="text">                </div>
+                        <input placeholder="Your username/email" class="form-control" name="email" type="text" value="<?php if(isset($_COOKIE['username'])) echo $_COOKIE['username']; ?>">
+                    </div>
 
                     <div class="form-group">
-                        <input placeholder="Your password" class="form-control" name="password" type="password" value="">                </div>
+                        <input placeholder="Your password" class="form-control" name="password" type="password" value="<?php if(isset($_COOKIE['password'])) echo $_COOKIE['password']; ?>">
+                    </div>
 
                     <div class="row">
                         <div class="col-md-6">
-
+                            <input type="checkbox" id="remember_me" name="remember_me" <?php if(isset($_COOKIE['username'])){echo "checked='checked'"; } ?> value="1" /> <label for="remember_me"> Remember Me </label>
                         </div>
                         <div class="col-md-6">
-                            <button type="submit" class="btn btn-primary pull-right">Login</button>
+                            <button type="submit" name="sub" class="btn btn-primary pull-right">Login</button>
                         </div>
                     </div>
 
@@ -556,6 +547,197 @@ if(isset($_SESSION['uid'])){
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.flot.js"></script>
 <script src="js/dropzone.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){             
+    function load()
+    {
+    var ID = $(".more").attr("id");
+    if(ID)
+    {
+        $("#loader").show();
+        $.ajax({
+        type: 'POST',
+        url: 'listing_more.php?option=<?php echo $opid;?>',
+        data: {id:ID},
+        cache: false,
+        success: function(html){
+            $("#loader").hide();
+            $("#more"+ID).before(html);
+            $("#more"+ID).remove();
+            }
+        });
+    }
+    }
+    
+    $(window).scroll(function () {
+    if ($(window).scrollTop() >= $(document).height() - $(window).height() - 5) {
+    load();
+    }
+});
+    });
+</script>
+<script type="text/javascript">
+    jQuery(function ($) {
+        $('.panel-heading span.clickable').on("click", function (e) {
+            if ($(this).hasClass('panel-collapsed')) {
+                // expand the panel
+                $(this).parents('.panel').find('.panel-body').slideDown();
+                $(this).removeClass('panel-collapsed');
+                $(this).find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+            }
+            else {
+                // collapse the panel
+                $(this).parents('.panel').find('.panel-body').slideUp();
+                $(this).addClass('panel-collapsed');
+                $(this).find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+    function makeRequest(radionButn) {
+        // /var fcategory = radionButn.serialize();
+        $.ajax({
+            url: 'search_category.php',
+            type: 'POST',
+            datatype: 'html',
+            data: {fcategory: radionButn},
+            success: function(data) {
+                    //alert("Success!");
+                        $("catg").hide();
+                     $("#main").html(data);
+                     $("#catf").show();
+                     //$("#bcrumb").hide();
+                     $("#main2").hide();
+            }, 
+            error : function() {
+                    alert("Something went wrong!");
+            }
+        });
+
+    }
+
+    $('#catform input').on('change', function() {
+   var radionButn=$('input[name=category]:checked', '#catform').val();
+   if(radionButn){
+     //console.log(radionButn);
+     makeRequest(radionButn);
+   }
+});
+    $('#catform').submit(function(ev){
+    ev.preventDefault();
+    makeAjaxRequest();
+});
+    });
+</script>
+<!-- option script -->
+<script type="text/javascript">
+$(document).ready(function(){
+    function makeRequest(optionButn) {
+        // /var fcategory = radionButn.serialize();
+        $.ajax({
+            url: 'search_option.php',
+            type: 'POST',
+            datatype: 'html',
+            data: {fcategory: optionButn},
+            success: function(data) {
+                    //alert("Success!");
+                        $("catg").hide();
+                     $("#main").html(data);
+                     $("#catf").show();
+                     //$("#bcrumb").hide();
+                     $("#main2").hide();
+            }, 
+            error : function() {
+                    alert("Something went wrong!");
+            }
+        });
+
+    }
+
+    $('#optionform input').on('change', function() {
+   var optionButn=$('input[name=option]:checked', '#optionform').val();
+   if(optionButn){
+     //console.log(radionButn);
+     makeRequest(optionButn);
+   }
+});
+    $('#optionform').submit(function(ev){
+    ev.preventDefault();
+    makeAjaxRequest();
+});
+    });
+</script>
+
+<!-- end -->
+<script type="text/javascript">
+        $(document).ready(function(){             
+            function load()
+            {
+            var ID = $(".morecat").attr("id");
+            if(ID)
+            {
+                $("#loader").show();
+                $.ajax({
+                type: 'POST',
+                url: 'search_filter_cat.php?option=<?php echo $fc;?>',
+                data: {id:ID},
+                cache: false,
+                success: function(html){
+                    $("#loader").hide();
+                    $("#more"+ID).before(html);
+                    $("#more"+ID).remove();
+                    }
+                });
+            }
+            }
+            
+            $(window).scroll(function () {
+            if ($(window).scrollTop() >= $(document).height() - $(window).height() - 5) {
+            load();
+            }
+        });
+            });
+</script>
+<!-- for category -->
+
+<script type="text/javascript">
+        $(document).ready(function(){
+            function load()
+            {
+            var ID = $(".moreoption").attr("id");
+            if(ID)
+            {
+                $("#loader").show();
+                $.ajax({
+                type: 'POST',
+                url: 'search_filter_cat.php?option=<?php echo $fc;?>',
+                data: {id:ID},
+                cache: false,
+                success: function(html){
+                    $("#loader").hide();
+                    $("#more"+ID).before(html);
+                    $("#more"+ID).remove();
+                    }
+                });
+            }
+            }
+            $(window).scroll(function () {
+            if ($(window).scrollTop() >= $(document).height() - $(window).height() - 5) {
+            load();
+            }
+        });
+            });
+</script>
+<script type="text/javascript">
+    function searchterm(){
+        var search=$(#searchbar).val();
+        if(search==null){
+
+        }
+    }
+</script>
 
 <!-- Add fancyBox main JS and CSS files -->
 <script type="text/javascript" src="js/fancybox/jquery.fancybox.js?v=2.1.5"></script>

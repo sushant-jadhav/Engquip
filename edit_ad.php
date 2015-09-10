@@ -1,8 +1,16 @@
 <?php 
 session_start();
+if(isset($_COOKIE['uniqueID'])){
+    $cid=$_COOKIE['uniqueID'];
+   }
 if(isset($_SESSION['uid'])){
 $uid=$_SESSION['uid'];
 $username=$_SESSION['user'];
+}
+if(isset($_GET['ad'])){
+$adid=mysql_real_escape_string($_GET['ad']);
+$_SESSION['adsid']=$_GET['ad'];
+$adsid=$_SESSION['adsid'];
 }
 ?>
 <!DOCTYPE html>
@@ -137,16 +145,19 @@ $username=$_SESSION['user'];
 
 </div>
         </div>
-
+    <?php
+    include("config.php");
+    $sql_edit="SELECT ads.*,options.* from ads left join options on ads.opId=options.opId where ads.adId='$adid'";
+    $result_edit=mysql_query($sql_edit,$connect);
+    while($ad_edit=mysql_fetch_object($result_edit)){
+    ?>
         <div class="col-sm-9">
-            <form class="form-vertical" action="ads.php" method="POST" enctype="multipart/form-data">
+            <form class="form-vertical" action="edit.php" method="POST" enctype="multipart/form-data">
 
                 <div class="panel panel-default">
                     <div class="panel-heading">Choose category</div>
                     <div class="panel-body">
-
-
-                        <div class="row">  
+                        <div class="row">
                             <div class="col-sm-12 "  >
 
                                 <div class="form-group">
@@ -158,7 +169,7 @@ $username=$_SESSION['user'];
                                         <div class="col-sm-6">
 
                                               <select id="category" class="form-control" name="category">
-                                                <option>Choose a category</option>
+                                                <option><?php echo $ad_edit->opName?></option>
                                                 <optgroup label="Books">
                                                     <option value="1">&nbsp;&nbsp;&nbsp;Computer Science</option>
 
@@ -228,22 +239,22 @@ $username=$_SESSION['user'];
 
                                 <div class="col-sm-12">
                                     <label>Title </label>
-                                    <input type="text" name="heading" id="heading" class="form-control" >
+                                    <input type="text" name="heading" id="heading" value="<?php echo $ad_edit->adHeading;?>" class="form-control" >
                                 </div>
                                 <div class="col-sm-12"><br />
                                     <label>Description </label>
                                     <!-- <textarea class="form-control col-sm-8 expand"  name="description" rows="6" style="width: 99%"></textarea> -->
-                                    <textarea id="text" name="description" class="form-control" rows="8"></textarea>
+                                    <textarea id="text" name="description" value="<?php echo $ad_edit->adText;?>" class="form-control" rows="8"></textarea>
                                 </div>
 
                                 <div class="col-sm-12"><br />
                                     <label>Keywords</label>
-                                    <input type="text" name="key" class="form-control" >
+                                    <input type="text" name="key" value="<?php echo $ad_edit->adKey;?>" class="form-control" >
                                 </div>
                                  <div class="col-sm-12">
                                     <label>Status </label>
                                      <select id="type" name="status" class="form-control">
-                                            <option selected="selected">Select status</option>
+                                            <option selected="selected"><?php echo $ad_edit->adStatus;?></option>
                                             <option>New</option>
                                             <option>Used</option>
                                           </select>
@@ -261,11 +272,11 @@ $username=$_SESSION['user'];
                             <div class="row">
                                 <div class="col-sm-6">
                                     <label>Region</label>
-                                    <input type="text" name="region" class="form-control "  >
+                                    <input type="text" name="region" class="form-control" value="<?php echo $ad_edit->adRegion;?>"  >
                                 </div>
                                 <div class="col-sm-6">
                                     <label>City</label>
-                                    <input type="text" name="city" id="city" class="form-control"  >
+                                    <input type="text" name="city" id="city" class="form-control" value="<?php echo $ad_edit->adCity;?>" >
                                 </div>
                                 <div class="col-sm-6"><br />
                                     <label>Country</label>
@@ -277,7 +288,7 @@ $username=$_SESSION['user'];
                                 </div>
                                 <div class="col-sm-6"><br />
                                     <label>Pin Code</label>
-                                    <input type="text" name="pincode" class="form-control "  >
+                                    <input type="text" name="pincode" class="form-control " value="<?php echo $ad_edit->adPincode;?>"  >
                                 </div>
 
 
@@ -302,7 +313,7 @@ $username=$_SESSION['user'];
                         <!-- <div id="my-dropzone" action="ads.php" class="dropzone"></div>
                         <br /><p><small>* please note that the displayed images are cropped/resized only for display purposes</small></p> -->
                         <div class="form-group">
-                  <label>Select images</label>
+                  <label>Update your images</label>
                   <input type="file" id="image1" name="image1">
                   <input type="file" id="image2" name="image2">
                   <input type="file" id="image3" name="image3">
@@ -317,7 +328,7 @@ $username=$_SESSION['user'];
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" name="price"  placeholder="How much do you want it to be listed for?">
+                                    <input type="text" class="form-control" name="price" value="<?php echo $ad_edit->adPrice;?>"  placeholder="How much do you want it to be listed for?">
                                 </div>
                                 <div class="col-sm-6">
                                     <p>You can adjust your price anytime you like, even after your listing is published.</p>
@@ -325,22 +336,23 @@ $username=$_SESSION['user'];
                             </div>
                         </div>
                     </div>
-                </div>	
+                </div>
+                <?php }?>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">Complete ad</div>
                     <div class="panel-body">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox"> I agree to the terms and conditions and regulations.
+                                <input type="checkbox"> I agree to the <a href="terms.php">terms and conditions</a> and regulations.
                             </label>
                         </div>
                         <br />
-                        <button type="" class="btn btn-default hidden-xs">Save draft</button>
-                        <button type="" class="btn btn-default hidden-xs">Preview ad</button>
+                        <!-- <button type="" class="btn btn-default hidden-xs">Save draft</button> -->
+                        <!-- <button type="" class="btn btn-default hidden-xs">Preview ad</button> -->
                         <!-- <button class="btn btn-primary pull-right" type="submit" name="submit"><i class="icon-ok"></i>  Publish ad</button> -->
                         <?php if(!isset($uid)){echo "<button class='btn btn-primary pull-right' data-toggle='modal' data-target='#modalLogin'><i class='icon-ok'></i>  Publish ad</button>" ;}
-                            else {echo "<button class='btn btn-primary pull-right' type='submit' name='submit'><i class='icon-ok'></i>  Publish ad</button>";} ?>
+                            else {echo "<button class='btn btn-primary' type='submit' name='submit'><i class='icon-ok'></i>  Update ad</button>";} ?>
                         <br /><p class=" hidden-xs" style="text-align: right"><small><br /> </small></p>
                     </div>
                 </div>
@@ -368,17 +380,19 @@ $username=$_SESSION['user'];
             <div class="modal-body">
                 <p>If you have an account with us, please enter your details below.</p>
 
-                <form method="POST" action="account_dashboard.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
+                <form method="POST" action="login.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
 
                     <div class="form-group">
-                        <input placeholder="Your username/email" class="form-control" name="email" type="text">                </div>
+                        <input placeholder="Your username/email" class="form-control" name="email" type="text" value="<?php if(isset($_COOKIE['username'])) echo $_COOKIE['username']; ?>">
+                    </div>
 
                     <div class="form-group">
-                        <input placeholder="Your password" class="form-control" name="password" type="password" value="">                </div>
+                        <input placeholder="Your password" class="form-control" name="password" type="password" value="<?php if(isset($_COOKIE['password'])) echo $_COOKIE['password']; ?>">
+                    </div>
 
                     <div class="row">
                         <div class="col-md-6">
-
+                            <input type="checkbox" id="remember_me" name="remember_me" <?php if(isset($_COOKIE['username'])){echo "checked='checked'"; } ?> value="1" /> <label for="remember_me"> Remember Me </label>
                         </div>
                         <div class="col-md-6">
                             <button type="submit" name="sub" class="btn btn-primary pull-right">Login</button>
@@ -401,6 +415,53 @@ $username=$_SESSION['user'];
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div class="modal fade" id="modalpost" tabindex="-1" role="dialog" aria-labelledby="modalpost" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Sign in to your account For Posting Ads</h4>
+            </div>
+            <div class="modal-body">
+                <p>If you have an account with us, please sign in for post ads.</p>
+
+                <form method="POST" action="login.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
+
+                    <div class="form-group">
+                        <input placeholder="Your username/email" class="form-control" name="email" type="text" value="<?php if(isset($_COOKIE['username'])) echo $_COOKIE['username']; ?>">
+                    </div>
+
+                    <div class="form-group">
+                        <input placeholder="Your password" class="form-control" name="password" type="password" <?php if(isset($_COOKIE['password'])) echo $_COOKIE['password']; ?>>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="checkbox" id="remember_me" name="remember_me" <?php if(isset($_COOKIE['username'])){echo "checked='checked'"; } ?> value="1" /> <label for="remember_me"> Remember Me </label>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="submit" name="submit" class="btn btn-primary pull-right">Login</button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a data-toggle="modal" href="#modalForgot">Forgot your password?</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer" style="text-align: center">
+                <div class="error-message"><p style="color: #000; font-weight: normal;">Don't have an account? <a class="link-info" href="register.php">Register now</a></p></div>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 
 <!-- Modal -->

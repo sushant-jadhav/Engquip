@@ -4,8 +4,8 @@ $id = trim($_REQUEST['id']);
 $srch=$_GET['search'];
 $cat=$_GET['category'];
 $qry="SELECT ads.*,options.*,category.* FROM ads left join options on ads.opId=options.opId inner join category on options.cId=category.cId where ads.adHeading  like '%{$srch}%' and category.cName='$cat' ORDER BY adId asc LIMIT 5";
-$sql=mysql_query($qry,$connect);
-while($ad = mysql_fetch_object($sql))
+$sql=mysqli_query($connect,$qry);
+while($ad = mysqli_fetch_object($sql))
 {
 ?>
 <div class="col-sm-14 pull-left listings">
@@ -37,7 +37,7 @@ while($ad = mysql_fetch_object($sql))
                             &nbsp;<a class="link-info underline" href="#">Contact</a></span>
                     </p>
                 </div> </div>
-<?php } if(mysql_num_rows($sql)==5){?>
+<?php } if(mysqli_num_rows($sql)==5){?>
 <div id="more<?php echo $id;?>" class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row">
 <a href="javascript:void(0)" class="more" id="<?php echo $id;?>">Loading..</a>
 <img src="loading.gif" id="loader" style="display:none">

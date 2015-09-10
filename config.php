@@ -1,7 +1,8 @@
 <?php
-$connect = mysql_connect('localhost','root',''); 
+$connect = mysqli_connect('localhost','root',''); 
 if (!$connect) { 
-die('Could not connect to MySQL: ' . mysql_error());
+die('Could not connect to MySQL: ' . mysqli_error());
  }
- mysql_select_db('classifiedads',$connect);
+ mysqli_select_db($connect,'classifiedads');
+ $base_url='http://www.youwebsite.com/';
 ?>

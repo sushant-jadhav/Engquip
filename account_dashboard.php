@@ -79,8 +79,10 @@ $username=$_SESSION['user'];
                             else {echo "<a href='logout.php'>logout</a> | ";} ?>
                                 <!-- <a href="register.php">New Register</a> |  -->
                                 <a href="listings.php">Listings</a> | 
-                                <a href="account_dashboard.php">My account</a>
-                                <a href="account_ad_create.php" class="btn btn-default post-ad-btn">Post an ad</a>
+                                 <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>My Account</a> ";}
+                            else {echo "<a href='account_dashboard.php'>Welcome, $username</a>  ";} ?>
+                                <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalpost'  href='#' class='btn btn-primary post-ad-btn'>Post an ad</a>";}
+                                else{echo "<a href='account_ad_create.php' class='btn btn-primary post-ad-btn'>Post an ad</a>";}?>
 
                             </div>	
                         </div>
@@ -203,36 +205,38 @@ $count=$row->total;
 
 
                     <br />
-                    <br />			
                     <br />
+                    <br />
+                    <br />
+                   <br />
                     <br />
 
                     <div class="row">
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <h3>Create a new ad</h3>
                             <p>Click on the button below to start creating a new ad. You can upload up to 20 images per property.</p>
-                            <a href="account_ad_create.php" class="btn btn-default">Create new ad</a>
+                            <a href="account_ad_create.php" class="btn btn-primary">Create new listing ad</a>
                             <br />
                             <br />
                         </div>
 
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <h3>Promote your ads</h3>
                             <p>If your ad has fallen to the 3rd or 4th page, it's a good time to 'bump' it back to the 1st page</p>
-                            <a href="account_ads.php" class="btn btn-default">Bump listings</a>
+                            <a href="account_ads.php" class="btn btn-primary">Edit listings ads</a>
                             <br />
                             <br />
                         </div>
 
-                        <div class="col-sm-4">
+                        <!-- <div class="col-sm-4">
                             <h3>Unlimited listings</h3>
                             <p>Upgrade your account be able to publish unlimited properties per month.</p>
                             <a href="#" class="btn btn-default">Upgrade account</a>
                             <br />
                             <br />
-                        </div>
+                        </div> -->
 
                     </div>
 

@@ -1,5 +1,8 @@
 <?php 
 session_start();
+if(isset($_COOKIE['uniqueID'])){
+    $cid=$_COOKIE['uniqueID'];
+   }
 if(isset($_SESSION['uid'])){
 $uid=$_SESSION['uid'];
 }
@@ -418,20 +421,22 @@ $uid=$_SESSION['uid'];
             <div class="modal-body">
                 <p>If you have an account with us, please enter your details below.</p>
 
-                <form method="POST" action="account_dashboard.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
+                <form method="POST" action="login.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
 
                     <div class="form-group">
-                        <input placeholder="Your username/email" class="form-control" name="email" type="text">                </div>
+                        <input placeholder="Your username/email" class="form-control" name="email" type="text" value="<?php if(isset($_COOKIE['username'])) echo $_COOKIE['username']; ?>">
+                    </div>
 
                     <div class="form-group">
-                        <input placeholder="Your password" class="form-control" name="password" type="password" value="">                </div>
+                        <input placeholder="Your password" class="form-control" name="password" type="password" value="<?php if(isset($_COOKIE['password'])) echo $_COOKIE['password']; ?>">
+                    </div>
 
                     <div class="row">
                         <div class="col-md-6">
-
+                            <input type="checkbox" id="remember_me" name="remember_me" <?php if(isset($_COOKIE['username'])){echo "checked='checked'"; } ?> value="1" /> <label for="remember_me"> Remember Me </label>
                         </div>
                         <div class="col-md-6">
-                            <button type="submit" class="btn btn-primary pull-right">Login</button>
+                            <button type="submit" name="sub" class="btn btn-primary pull-right">Login</button>
                         </div>
                     </div>
 
@@ -451,7 +456,6 @@ $uid=$_SESSION['uid'];
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 
 <!-- Modal -->
 <div class="modal fade" id="modalForgot" tabindex="-1" role="dialog" aria-labelledby="modalForgot" aria-hidden="true">

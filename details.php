@@ -1,5 +1,8 @@
 <?php
 session_start();
+if(isset($_COOKIE['uniqueID'])){
+    $cid=$_COOKIE['uniqueID'];
+   }
 if(isset($_SESSION['uid'])){
  $uid=$_SESSION['uid'];
  $username=$_SESSION['user'];
@@ -87,13 +90,14 @@ if(isset($_SESSION['uid'])){
                             <div class="pull-right">
 
 
-                                <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>Login</a> | <a href='register.php'>Register</a> | ";}
+                                <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>Login</a> |";}
                             else {echo "<a href='logout.php'>logout</a> | ";} ?>
-                                <!-- <a href="register.php">Register</a> | 
-                                <a href="listings.php">Listings</a> |  -->
-                                <a href="account_dashboard.php"><?php if(!isset($uid)){echo "My Account"; }else{echo "Welcome,",$username;}?></a>
-                                <a href="account_ad_create.php" class="btn btn-default post-ad-btn">Post an ad</a>
-
+                                 <!-- <a href="wishlist.php" class="">Wishlist <span class="badge val"></span></a> | -->
+                                <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>My Account</a> ";}
+                            else {echo "<a href='account_dashboard.php'>Welcome, $username</a>  ";} ?>
+                                <!-- <a href="account_ad_create.php" class="btn btn-warning post-ad-btn">Post an ad</a> -->
+                                <?php if(!isset($uid)){echo "<a href='post_ad.php' class='btn btn-primary post-ad-btn'>Post an ad</a>";}
+                                else{echo "<a href='account_ad_create.php' class='btn btn-primary post-ad-btn'>Post an ad</a>";}?>
                             </div>
                         </div>
                     </div>
@@ -104,6 +108,9 @@ if(isset($_SESSION['uid'])){
                 <div class="container">
                     <div class="row">
 
+                        <?php if(isset($_GET['search'])){ $srch= $_GET['search'];}else{$srch=null;}?>
+                        <?php if(isset($_GET['category'])){$cat=$_GET['category'];}else{$cat=null;}?>
+                        <form method="GET" action="search.php?search=<?php echo $srch;?>&category=<?php echo $cat;?>">
                         <div class="col-sm-12">
                             <div class="home-tron-search-inner">
 
@@ -116,19 +123,17 @@ if(isset($_SESSION['uid'])){
                                                 <div class="input-group">
                                                     <span class="input-group-addon input-group-addon-text hidden-xs">Find me a</span>
 
-                                                    <input type="text" class="form-control col-sm-3" placeholder="e.g. BMW, 2 bed flat, sofa ">
+                                                    <input type="text" class="form-control col-sm-3" name="search" placeholder="e.g. BMW, 2 bed flat, sofa" required>
                                                     <div class=" input-group-addon hidden-xs">
                                                         <div class="btn-group" >
-                                                            <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown">
-                                                                All categories <span class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu" name="" role="menu">
-                                                                <li value="1"><a>Books</a></li>
-                                                                <li value="2"><a>Tools</a></li>
-                                                                <li value="3"><a>Electronics & Computer</a></li>
-                                                                <li value="4"><a>Services</a></li>
-                                                                <li value="5"><a>Jobs</a></li>
-                                                            </ul>
+                                                            <select class="btn dropdown-toggle" name="category">
+                                                                <option>Choose Category</option>
+                                                                <option value="Books">Books</option>
+                                                                <option value="Tools">Tools</option>
+                                                                <option value="Electronics & Computer">Electronics & Computer</option>
+                                                                <option value="Services">Services</option>
+                                                                <option value="Jobs">Jobs</option>
+                                                            </select>
                                                         </div>
                                                     </div>
 
@@ -153,6 +158,7 @@ if(isset($_SESSION['uid'])){
                                 </div>
                             </div>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -163,15 +169,11 @@ if(isset($_SESSION['uid'])){
         <div class="col-sm-12 listing-wrapper listings-top listings-bottom">
             <br />
             <br />
-                <?php $dbhost = "localhost";
-                    $dbuser = "root";
-                    $dbpass = "";
-                    $dbcon = mysql_connect($dbhost,$dbuser,$dbpass);
-                    mysql_select_db('classifiedads',$dbcon);
-                    //$sql_ad="SELECT ads.*,users.* FROM ads left join users on ads.uId=users.uId  where ads.adId=$adid";
+                <?php 
+                include("config.php");
                     $sql_ad="SELECT ads.*,users.*,options.* FROM ads left join users on ads.uId=users.uId inner join options on ads.opId=options.opId where ads.adId=$adid and ads.opId=$opid ";
-                    $result_ad =mysql_query($sql_ad,$dbcon);
-                    while($ad=mysql_fetch_object($result_ad)){
+                    $result_ad =mysqli_query($connect,$sql_ad);
+                    while($ad=mysqli_fetch_object($result_ad)){
             ?>
             
             <div class="row">
@@ -194,8 +196,8 @@ if(isset($_SESSION['uid'])){
             <div class="row">
 
                 <div class="col-sm-7">	
-                    <h1><?php echo $ad->adHeading; ?> </h1>
-                    <p>Location: <?php echo $ad->adCity;?>, <?php echo $ad->adCountry;?></p>
+                    <h1 id="ad"><?php echo $ad->adHeading;?> <!-- <a href="#" id="<?php echo $ad->adId;?>" class="approve-button"><i class="fa fa-star wl-button">wishlist it</i></a> --> </h1>
+                    <p>Location: <?php echo $ad->adCity;?>, <?php echo $ad->adRegion;?> India</p>
                 </div>
 
 
@@ -254,7 +256,7 @@ if(isset($_SESSION['uid'])){
                                     </tr>
                                     <tr>
                                         <th>Ad ?</th>
-                                        <td><?php echo $ad->adId;?></td>
+                                        <td id="product"><?php echo $ad->adId;?></td>
                                     </tr>
 
                                 </tbody>
@@ -290,11 +292,11 @@ if(isset($_SESSION['uid'])){
                                 <tbody>
                                     <tr>
                                         <th>Name</th>
-                                        <td><?php echo $ad->uFirstname;?></td>
+                                        <td><?php echo $ad->adName;?> </td>
                                     </tr>
                                     <tr>
                                         <th>Email</th>
-                                        <td><?php echo $ad->uEmail;?></td>
+                                        <td><?php echo $ad->adEmail;?></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -305,11 +307,11 @@ if(isset($_SESSION['uid'])){
                                 <tbody>
                                     <tr>
                                         <th>College </th>
-                                        <td><?php echo $ad->uCollege;?></td>
+                                        <td><?php echo $ad->adCollege;?></td>
                                     </tr>
                                     <tr>
                                         <th>Contact </th>
-                                        <td><?php echo $ad->uPhone;?></td>
+                                        <td><?php echo $ad->adPhone;?></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -329,12 +331,12 @@ if(isset($_SESSION['uid'])){
                     <p>Ad ref: <?php echo $ad->adId;?> | Posted <?php echo $ad->adDate;?></p>
 
                     <p>
-                        <span class="classified_links ">
+                        <!-- <span class="classified_links ">
                             <a class="link-info" href="#"><i class="fa fa-share"></i> Share</a>&nbsp;
-                            <a class="link-info " href="#"><i class="fa fa-star"></i> Add to favorites</a>
-                            &nbsp;<a class="link-info " href="#"><i class="fa fa-envelope-o"></i> Contact</a>
+                            <i class="fa fa-star wl-button"></i> Add to favorites
+                            &nbsp;<a class="link-info  " href="#"><i class="fa fa-envelope-o"></i> Contact</a>
                             &nbsp;<a class="link-info fancybox-media" href="http://maps.google.com/?q=<?php echo $ad->adCity;?>"><i class="fa fa-map-marker"></i> Map</a></span>
-                    </p>
+                     --></p>
 
                 </div>
 
@@ -369,22 +371,6 @@ if(isset($_SESSION['uid'])){
                                         <img alt="" src="<?php echo $ad->adImg4;?>" style="width: 100%" />
                                     </a>
                                 </div>
-                                                                <!-- <div class="col-xs-4" style="margin-bottom: 10px;">	
-                                    <a href="css/images/single/6.jpg" class="fancybox thumbnail" rel="group" >
-                                        <img alt="" src="image/2.jpg" style="width: 100%" />
-                                    </a>
-                                </div>
-                                                                <div class="col-xs-4" style="margin-bottom: 10px;">	
-                                    <a href="css/images/single/7.jpg" class="fancybox thumbnail" rel="group" >
-                                        <img alt="" src="image/2.jpg" style="width: 100%" />
-                                    </a>
-                                </div>
-                                                                <div class="col-xs-4" style="margin-bottom: 10px;">	
-                                    <a href="css/images/single/8.jpg" class="fancybox thumbnail" rel="group" >
-                                        <img alt="" src="image/2.jpg" style="width: 100%" />
-                                    </a>
-                                </div> -->
-                                
                             </div>
 
                         </div>
@@ -392,9 +378,9 @@ if(isset($_SESSION['uid'])){
                     <br />	
                     <br />	
                     <div class="col-sm-12" style="text-align: center; margin: 0 auto">	
-                        <button data-toggle="modal" data-target="#myModal" class="btn btn-warning" style="text-align: center;width: 180px; " type="button">Reply to ad</button>
+                        <button data-toggle="modal" data-target="#myModal" class="btn btn-primary" style="text-align: center;width: 180px; " type="button">Reply to ad</button>
                         <br />
-                        <p>or call <?php echo $ad->uFirstname;?> on <strong>+91&nbsp;<?php echo $ad->uPhone;?></strong></p>
+                        <p>or call <?php echo $ad->adName;?> on <strong>+91&nbsp;<?php echo $ad->adPhone;?></strong></p>
                     </div>
 
 
@@ -418,19 +404,11 @@ if(isset($_SESSION['uid'])){
                         <?php// }?>
                         <div class="panel-body">
                         <?php 
-                        $dbhost = "localhost";
-                    $dbuser = "root";
-                    $dbpass = "";
-                    $dbcon = mysql_connect($dbhost,$dbuser,$dbpass);
-                    mysql_select_db('classifiedads',$dbcon);
-                      //$sql="select ads.* , options.* from ads
-                        //      inner join options
-                          //    on ads.opId=options.opId
-                            //  where ads.opId=$opid";
+                       include("config.php");
                     $city=$ad->adCity;
-                    $sql_city="SELECT ads.*,options.* FROM ads left join options on ads.opId=options.opId  where  ads.adCity  like '%{$city}%' ";
-                    $result_city = mysql_query($sql_city,$dbcon);
-                        while($adcity = mysql_fetch_object($result_city)){?>
+                    $sql_city="SELECT ads.*,options.* FROM ads left join options on ads.opId=options.opId  where  ads.adCity  like '%{$city}%' limit 3 ";
+                    $result_city = mysqli_query($connect,$sql_city);
+                        while($adcity = mysqli_fetch_object($result_city)){?>
                                 
                             <div class="row premium  listing-row">
 
@@ -475,15 +453,15 @@ if(isset($_SESSION['uid'])){
                                                 <strong>Diesel</strong>                
                                             </p>
                                         </div>
-                                        <div class="col-sm-5">
+                                        <!-- <div class="col-sm-5">
                                             <p>
                                                 <span class="classified_links pull-right">
                                                     <a class="link-info underline" href="#">Share</a>&nbsp;
-                                                    <a class="link-info underline" href="#">Add to favorites</a>
+                                                    <a class="link-info underline wl-button">Add to favorites</a>
                                                     &nbsp;<a class="link-info underline" href="#">Contact</a>
                                                     &nbsp;<a class="link-info underline" href="http://maps.google.com/?q=<?php echo $adcity->adCity;?>">Map</a></span>
                                             </p>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -585,20 +563,22 @@ if(isset($_SESSION['uid'])){
             <div class="modal-body">
                 <p>If you have an account with us, please enter your details below.</p>
 
-                <form method="POST" action="account_dashboard.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
+                <form method="POST" action="login.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
 
                     <div class="form-group">
-                        <input placeholder="Your username/email" class="form-control" name="email" type="text">                </div>
+                        <input placeholder="Your username/email" class="form-control" name="email" type="text" value="<?php if(isset($_COOKIE['username'])) echo $_COOKIE['username']; ?>">
+                    </div>
 
                     <div class="form-group">
-                        <input placeholder="Your password" class="form-control" name="password" type="password" value="">                </div>
+                        <input placeholder="Your password" class="form-control" name="password" type="password" value="<?php if(isset($_COOKIE['password'])) echo $_COOKIE['password']; ?>">
+                    </div>
 
                     <div class="row">
                         <div class="col-md-6">
-
+                            <input type="checkbox" id="remember_me" name="remember_me" <?php if(isset($_COOKIE['username'])){echo "checked='checked'"; } ?> value="1" /> <label for="remember_me"> Remember Me </label>
                         </div>
                         <div class="col-md-6">
-                            <button type="submit" class="btn btn-primary pull-right">Login</button>
+                            <button type="submit" name="sub" class="btn btn-primary pull-right">Login</button>
                         </div>
                     </div>
 
@@ -618,6 +598,53 @@ if(isset($_SESSION['uid'])){
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<!-- post ads -->
+<div class="modal fade" id="modalpost" tabindex="-1" role="dialog" aria-labelledby="modalpost" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Sign in to your account For Posting Ads</h4>
+            </div>
+            <div class="modal-body">
+                <p>If you have an account with us, please sign in for post ads.</p>
+
+                <form method="POST" action="login.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
+
+                    <div class="form-group">
+                        <input placeholder="Your username/email" class="form-control" name="email" type="text" value="<?php if(isset($_COOKIE['username'])) echo $_COOKIE['username']; ?>">
+                    </div>
+
+                    <div class="form-group">
+                        <input placeholder="Your password" class="form-control" name="password" type="password" <?php if(isset($_COOKIE['password'])) echo $_COOKIE['password']; ?>>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="checkbox" id="remember_me" name="remember_me" <?php if(isset($_COOKIE['username'])){echo "checked='checked'"; } ?> value="1" /> <label for="remember_me"> Remember Me </label>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="submit" name="submit" class="btn btn-primary pull-right">Login</button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a data-toggle="modal" href="#modalForgot">Forgot your password?</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer" style="text-align: center">
+                <div class="error-message"><p style="color: #000; font-weight: normal;">Don't have an account? <a class="link-info" href="register.php">Register now</a></p></div>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 
 <!-- Modal -->
@@ -649,7 +676,7 @@ if(isset($_SESSION['uid'])){
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
+<?php  }?>
 <div class="footer">
     <div class="container">
 
@@ -658,10 +685,11 @@ if(isset($_SESSION['uid'])){
             <div class="col-sm-4 col-xs-12">
                 <p><strong>&copy; Bootstrap Classifieds 2014</strong></p>
                 <p>All rights reserved</p>
-            </div>			
+            </div>
 
             <div class="col-sm-8 col-xs-12">
                 <p class="footer-links">
+                <a ></a>
                     <a href="index.php" class="active">Home</a>
                     <a href="typography.php">Typography</a>
                     <a href="terms.php">Terms and Conditions</a>
@@ -671,7 +699,7 @@ if(isset($_SESSION['uid'])){
         </div>
     </div>
 </div>
-<?php  }?>
+
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
@@ -680,7 +708,39 @@ if(isset($_SESSION['uid'])){
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.flot.js"></script>
 <script src="js/dropzone.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('a[class="approve-button"]').click(function(){
 
+   //Get the ID of the button that was clicked on
+       var id_of_item_to_approve = $(this).attr("id");
+       console.log(id_of_item_to_approve);
+
+       $.ajax({
+          url: 'wishlist.php?adid=<?php echo $ad;?>', //This is the page where you will handle your SQL insert
+          type: 'POST',
+          datatype: 'html',
+          data: {id: id_of_item_to_approve}, //The data your sending to some-page.php
+          success: function(data){
+              console.log("AJAX request was successfull");
+              var c=$("#s").html(id_of_item_to_approve);
+              <?php $wisharray=array();
+              
+              array_push($wisharray, $adid);
+              $_SESSION['wishing']=$wisharray;
+              // print_r($_SESSION['wishing']);
+              ?>
+              var m=<?php echo json_encode($_SESSION['wishing']);
+              ?>;
+          },
+          error:function(){
+              console.log("AJAX request was a failure");
+          }   
+        });
+
+    });
+    });
+ </script>
 <!-- Add fancyBox main JS and CSS files -->
 <script type="text/javascript" src="js/fancybox/jquery.fancybox.js?v=2.1.5"></script>
 <script type="text/javascript" src="js/fancybox/helpers/jquery.fancybox-buttons.js?v=2.1.5"></script>

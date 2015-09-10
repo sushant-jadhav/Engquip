@@ -1,6 +1,8 @@
 <?php
 session_start();
-$uid=$_SESSION['uid'];
+
+if(isset($_COOKIE['uniqueID'])){$uid=$_COOKIE['uniqueID'];}else{$uid=$_SESSION['uid'];;}
+$current_date = date("Y-m-d");
 $dbcon=mysqli_connect("localhost","root","");
 mysqli_select_db($dbcon,"classifiedads");
 $title = $_POST['heading'];
@@ -11,8 +13,12 @@ $pincode = $_POST['pincode'];
 $status = $_POST['status'];
 $city =$_POST['city'];
 $region=$_POST['region'];
-$country=$_POST['country'];
+$address=$_POST['address'];
 $key=$_POST['key'];
+$adname=$_POST['adname'];
+$ademail=$_POST['ademail'];
+$college=$_POST['college'];
+$phone=$_POST['phone'];
 // image upload
 function GetImageExtension($imagetype)
      {
@@ -71,8 +77,8 @@ $t4 = move_uploaded_file($temp_name4, $target_path4);
 
 
 if($t1==True && $t2==True && $t3==True && $t4==True ){
-     $query_upload="INSERT into ads (adHeading,adText,adPrice,adPincode,opId,adStatus,adKey,adCountry,adRegion,adCity,uId,adImg1,adImg2,adImg3,adImg4) VALUES
-     ('$title','$des','$price','$pincode','$cat','$status','$key','$country','$region','$city','$uid','".$target_path1."','".$target_path2."','".$target_path3."','".$target_path4."')";
+     $query_upload="INSERT into ads (adHeading,adText,adPrice,adPincode,opId,adStatus,adKey,adAddress,adRegion,adCity,uId,adImg1,adImg2,adImg3,adImg4,adDate,adName,adEmail,adCollege,adPhone) VALUES
+     ('$title','$des','$price','$pincode','$cat','$status','$key','$address','$region','$city','$uid','".$target_path1."','".$target_path2."','".$target_path3."','".$target_path4."','$current_date','$adname','$ademail','$college','$phone')";
     mysqli_query($dbcon,$query_upload) or die("error in $query_upload == ----> ".mysql_error());
     echo"<script>window.open('index.php','_self')</script>";
     }else 

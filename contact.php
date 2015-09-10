@@ -71,9 +71,9 @@
 
                                 <a data-toggle="modal" data-target="#modalLogin"  href="#">Login</a> | 
                                 <a href="register.php">Register</a> | 
-                                <a href="listings.php">Listings</a> | 
-                                <a href="account_dashboard.php">My account</a>
-                                <a href="account_ad_create.php" class="btn btn-default post-ad-btn">Post an ad</a>
+                                <a href="listings.php">Listings</a>
+                                <!-- <a href="account_dashboard.php">My account</a> -->
+                                <a href="account_ad_create.php" class="btn btn-primary post-ad-btn">Post an ad</a>
 
                             </div>	
                         </div>
@@ -103,27 +103,31 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">First name</label>
-                                            <input class="form-control" name="first_name" type="text" value="">							</div>
+                                            <input class="form-control" name="first_name" type="text" value="">
+                                            </div>
                                     </div>
 
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Last name</label>
-                                            <input class="form-control" name="last_name" type="text" value="">							</div>
+                                            <input class="form-control" name="last_name" type="text" value="">
+                                            </div>
                                     </div>
-                                </div>					
+                                </div>
 
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Email</label>
-                                            <input class="form-control" name="email_address" type="text" value="">							</div>
+                                            <input class="form-control" name="email_address" type="text" value="">
+                                            </div>
                                     </div>
 
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Phone number</label>
-                                            <input class="form-control" name="phone_number" type="text" value="">							</div>
+                                            <input class="form-control" name="phone_number" type="text" value="">
+                                            </div>
                                     </div>
                                 </div>
 
@@ -133,13 +137,23 @@
                                             <label for="exampleInputEmail1">Category</label>
                                             <select class="form-control" name="report_type"><option value="general">-</option><option value="report">Report an error you have seen</option><option value="feedback">Send us feedback or suggestions</option><option value="advertising">Advertising on our site</option><option value="anything">Anything else</option></select>							</div>
                                     </div>
-                                </div>					
+                                </div>
 
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Your comments</label>
-                                            <textarea class="form-control" name="comment" cols="50" rows="10"></textarea>							</div>
+                                            <textarea class="form-control" name="comment" cols="50" rows="10"></textarea>
+                                            </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="submit"></label>
+                                            <input type="submit" class="btn btn-primary" name="submit" />
+                                            </div>
                                     </div>
                                 </div>
 
@@ -191,20 +205,22 @@
             <div class="modal-body">
                 <p>If you have an account with us, please enter your details below.</p>
 
-                <form method="POST" action="account_dashboard.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
+                <form method="POST" action="login.php" accept-charset="UTF-8" id="user-login-form" class="form ajax" data-replace=".error-message p">
 
                     <div class="form-group">
-                        <input placeholder="Your username/email" class="form-control" name="email" type="text">                </div>
+                        <input placeholder="Your username/email" class="form-control" name="email" type="text" value="<?php if(isset($_COOKIE['username'])) echo $_COOKIE['username']; ?>">
+                    </div>
 
                     <div class="form-group">
-                        <input placeholder="Your password" class="form-control" name="password" type="password" value="">                </div>
+                        <input placeholder="Your password" class="form-control" name="password" type="password" value="<?php if(isset($_COOKIE['password'])) echo $_COOKIE['password']; ?>">
+                    </div>
 
                     <div class="row">
                         <div class="col-md-6">
-
+                            <input type="checkbox" id="remember_me" name="remember_me" <?php if(isset($_COOKIE['username'])){echo "checked='checked'"; } ?> value="1" /> <label for="remember_me"> Remember Me </label>
                         </div>
                         <div class="col-md-6">
-                            <button type="submit" class="btn btn-primary pull-right">Login</button>
+                            <button type="submit" name="sub" class="btn btn-primary pull-right">Login</button>
                         </div>
                     </div>
 
@@ -224,7 +240,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 
 <!-- Modal -->
 <div class="modal fade" id="modalForgot" tabindex="-1" role="dialog" aria-labelledby="modalForgot" aria-hidden="true">

@@ -4,6 +4,9 @@ if(isset($_SESSION['uid'])){
 $uid=$_SESSION['uid'];
 $username=$_SESSION['user'];
 }
+if(isset($_SESSION['adsid'])){
+    $adsid=$_SESSION['adsid'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,10 +77,14 @@ $username=$_SESSION['user'];
 
                             <div class="pull-right">
 
+                                <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>Login</a> | ";}
+                            else {echo "<a href='logout.php'>logout</a> | ";} ?>
+                                <!-- <a href="register.php">New Register</a> |  -->
                                 <a href="listings.php">Listings</a> | 
-                                <a href="logout.php">Logout</a> | 
-                                <a href='account_dashboard.php'><?php echo "Welcome,", $username;?></a>
-                                <a href="account_ad_create.php" class="btn btn-warning post-ad-btn">Post an ad</a>
+                                 <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>My Account</a> ";}
+                            else {echo "<a href='account_dashboard.php'>Welcome, $username</a>  ";} ?>
+                                <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalpost'  href='#' class='btn btn-primary post-ad-btn'>Post an ad</a>";}
+                                else{echo "<a href='account_ad_create.php' class='btn btn-primary post-ad-btn'>Post an ad</a>";}?>
 
                             </div>	
                         </div>
@@ -171,9 +178,9 @@ $username=$_SESSION['user'];
 
                                                     <a href="account_ad_create.php"><?php echo $uad->adHeading;?></a><a href="#" class="no-views">(11 views)</a><br />
 
-                                                    <a class="edit-ad" href="account_ad_create.php">Edit ad</a>
-                                                    <a class="extend-ad" href="#" data-toggle="tooltip" title="Extend ad by 30 days">Extend for 30 days</a>
-                                                    <a class="remove-ad" href="#">Remove this ad</a>
+                                                    <a class="edit-ad" href="edit_ad.php?ad=<?php echo $uad->adId;?>">Edit ad</a>
+                                                    <!-- <a class="extend-ad" href="#" data-toggle="tooltip" title="Extend ad by 30 days">Extend for 30 days</a> -->
+                                                    <a class="remove-ad" onclick= 'return confirm("Are you sure")' href="account_ads.php?delete=yes&adid=<?php echo $uad->adId;?>">Remove this ad</a>
 
                                                     <p ><?php echo $uad->adText;?></p>
                                                 </td>
@@ -183,18 +190,19 @@ $username=$_SESSION['user'];
                                         </tbody>
                                     </table>
                                 </div>
-
-
-
-
                             </div>
-
                         </div>
-
                     </fieldset>
                 </form>
-
-
+                <?php if(isset($_GET['delete']))
+{
+    include("config.php");
+    $adid = $_GET['adid'];
+    $query = "DELETE FROM ads WHERE adId=$adid";
+    mysql_query($query,$connect); //link query to database
+    //print "Employee Updated"; // print confirmation
+    echo"<script>window.open('account_ads.php','_self')</script>";
+}?>
             </div>
         </div>
     </div>

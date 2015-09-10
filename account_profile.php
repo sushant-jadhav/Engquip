@@ -78,10 +78,12 @@ $username=$_SESSION['user'];
 
                                 <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>Login</a> | ";}
                             else {echo "<a href='logout.php'>logout</a> | ";} ?>
-                                <!-- <a href="register.php">Register</a> |  -->
+                                <!-- <a href="register.php">New Register</a> |  -->
                                 <a href="listings.php">Listings</a> | 
-                                <a href="account_dashboard.php">My account</a>
-                                <a href="account_ad_create.php" class="btn btn-default post-ad-btn">Post an ad</a>
+                                 <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalLogin'  href='#'>My Account</a> ";}
+                            else {echo "<a href='account_dashboard.php'>Welcome, $username</a>  ";} ?>
+                                <?php if(!isset($uid)){echo "<a data-toggle='modal' data-target='#modalpost'  href='#' class='btn btn-primary post-ad-btn'>Post an ad</a>";}
+                                else{echo "<a href='account_ad_create.php' class='btn btn-primary post-ad-btn'>Post an ad</a>";}?>
 
                             </div>	
                         </div>
