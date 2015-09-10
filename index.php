@@ -257,11 +257,11 @@ elseif(isset($_SESSION['uid'])){
                         <div class="panel-heading">Quick guide</div>
 
                         <ul class="list-group">
-                            <li class="list-group-item"><a href="typography.php">Our tips to stay safe</a></li>
+                            <li class="list-group-item"><a href="#">Our tips to stay safe</a></li>
                             <!-- <li class="list-group-item"><a href="typography.php">How to buy guide</a></li> -->
-                            <li class="list-group-item"><a href="typography.php">How to sell guide</a></li>
-                            <li class="list-group-item"><a href="typography.php">Help and contact us</a></li>
-                            <li class="list-group-item"><a href="typography.php">Frequently asked questions</a></li>
+                            <li class="list-group-item"><a href="#">How to sell guide</a></li>
+                            <li class="list-group-item"><a href="contact.php">Help and contact us</a></li>
+                            <li class="list-group-item"><a href="#">Frequently asked questions</a></li>
                         </ul>
 
 
