@@ -630,28 +630,7 @@ if(isset($_SESSION['uid'])){
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="footer">
-    <div class="container">
-
-        <div class="row">
-
-            <div class="col-sm-4 col-xs-12">
-                <p><strong>&copy; Bootstrap Classifieds 2014</strong></p>
-                <p>All rights reserved</p>
-            </div>          
-
-            <div class="col-sm-8 col-xs-12">
-                <p class="footer-links">
-                    <a href="index.php" class="active">Home</a>
-                    <a href="typography.php">Typography</a>
-                    <a href="terms.php">Terms and Conditions</a>
-                    <a href="contact.php">Contact Us</a>
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-
+<?php include("footer.php");?>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->

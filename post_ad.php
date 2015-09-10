@@ -107,7 +107,7 @@ $username=$_SESSION['user'];
 <h4 style="margin-top: 0">Increase visibility</h4>
 			<p>Don't forget to 'bump' your listing to gain more visibility</p>
                 <?php if(isset($_COOKIE['uniqueID'])){
-    //echo $cid=$_COOKIE['uniqueID'];
+    echo $cid=$_COOKIE['uniqueID'];
    }?>
 			</div>
 			</div>
@@ -428,28 +428,7 @@ $username=$_SESSION['user'];
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="footer">
-    <div class="container">
-
-        <div class="row">
-
-            <div class="col-sm-4 col-xs-12">
-                <p><strong>&copy; Bootstrap Classifieds 2014</strong></p>
-                <p>All rights reserved</p>
-            </div>			
-
-            <div class="col-sm-8 col-xs-12">
-                <p class="footer-links">
-                    <a href="index.php" class="active">Home</a>
-                    <a href="typography.php">Typography</a>
-                    <a href="terms.php">Terms and Conditions</a>
-                    <a href="contact.php">Contact Us</a>
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-
+<?php include("footer.php");?>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->

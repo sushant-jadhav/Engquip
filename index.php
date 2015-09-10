@@ -298,10 +298,13 @@ elseif(isset($_SESSION['uid'])){
                     </div>
                     <?php 
                     include("config.php");
-                    $query_count="SELECT";
-
+                    $query_count="SELECT count(adId) as count, adCity From ads where adCity='mumbai'";
+                    $result_count=mysqli_query($connect,$query_count);
+                    $count=mysqli_fetch_array($result_count);
+                    $countads=$count['count'];
+                    $city=$count['adCity'];
                     ?>
-                    <p class="main_slogan" style="margin: 28px 0">Currently listing 355,785 classified ads in the Mumbai.</p>
+                    <p class="main_slogan" style="margin: 28px 0">Currently listing <?php echo $countads;?> classified ads in the Mumbai.</p>
                      <?php ?>
                 </div>
 
@@ -479,27 +482,7 @@ if(isset($_POST['femail'])){
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="footer">
-    <div class="container">
-
-        <div class="row">
-
-            <div class="col-sm-4 col-xs-12">
-                <p><strong>&copy; Bootstrap Classifieds 2014</strong></p>
-                <p>All rights reserved</p>
-            </div>          
-
-            <div class="col-sm-8 col-xs-12">
-                <p class="footer-links">
-                    <a href="index.php" class="active">Home</a>
-                    <a href="typography.php">Typography</a>
-                    <a href="terms.php">Terms and Conditions</a>
-                    <a href="contact.php">Contact Us</a>
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
+<?php include("footer.php");?>
 
 
 <!-- Bootstrap core JavaScript
