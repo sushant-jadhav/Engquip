@@ -53,7 +53,7 @@ $username=$_SESSION['user'];
 
                     <a href="index.php" class="navbar-brand ">
                         <span class="logo"><strong>classified</strong><span class="handwriting">ads</span><br />
-                            <small >a minimalist theme built with bootstrap </small></span>
+                            <small > A Classifieds Ads for engg. students </small></span>
                     </a>
 
                 </div>
@@ -96,8 +96,8 @@ $username=$_SESSION['user'];
 <?php 
 include("config.php");
 $sql_dash="SELECT ads.*,count(ads.adId) as total,users.* from users left join ads on users.uId=ads.uId where users.uId=$uid";
-$result_dash=mysql_query($sql_dash,$connect);
-$row=mysql_fetch_object($result_dash);
+$result_dash=mysqli_query($connect,$sql_dash);
+$row=mysqli_fetch_object($result_dash);
 $count=$row->total;
 // $count=$row['adId'];
 ?>

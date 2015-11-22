@@ -25,7 +25,7 @@
             $id = $ad->adId;
             ?>
 
-                <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row" id="ajaxdiv">
+                <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row" id="ajaxdiv" onclick="location.href='details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>';" style="cursor: pointer;">
                 <!-- <div class="ribbon-wrapper-red"><div class="ribbon-red">&nbsp;<span>Featured</span></div></div> -->
                                 <div class="col-sm-2">
                     <a href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>" class="thumbnail " ><img alt="176 * 120" src="<?php echo $ad->adImg1;?>"></a>

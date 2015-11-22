@@ -46,8 +46,8 @@ $username=$_SESSION['user'];
                     </button>
 
                     <a href="index.php" class="navbar-brand ">
-                        <span class="logo"><strong>enquip</strong><span class="handwriting">ads</span><br />
-                            <small >a minimalist theme built with bootstrap </small></span>
+                        <span class="logo"><strong>classified</strong><span class="handwriting">ads</span><br />
+                            <small > A Classifieds Ads for engg. students </small></span>
                     </a>
 
                 </div>

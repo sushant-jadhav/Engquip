@@ -52,9 +52,8 @@ $username=$_SESSION['user'];
 
                     <a href="index.php" class="navbar-brand ">
                         <span class="logo"><strong>classified</strong><span class="handwriting">ads</span><br />
-                            <small >a minimalist theme built with bootstrap </small></span>
+                            <small > A Classifieds Ads for engg. students </small></span>
                     </a>
-
                 </div>
 
 
@@ -155,10 +154,19 @@ $username=$_SESSION['user'];
 		</div>
 
 </div>        </div>
+<?php
+include('config.php');
+$dbcon=mysqli_connect("localhost","root","");
+$res = mysqli_select_db($dbcon,"classifiedads");
+$sel_user = 'SELECT * from users where uId=$uid';
+$res_user= mysql_query($dbcon,$sel_user);
+$row=mysql_fetch_array($res_user);
+$name = $row['uFirstname'];
 
+?>
         <div class="col-sm-9">
             <div class="panel panel-default">
-                <div class="panel-heading">Manage adverts</div>
+                <div class="panel-heading">Manage adverts <?php echo $name;?></div>
                 <div class="panel-body">
 
                     <form class="form-horizontal">

@@ -1,18 +1,36 @@
 <?php 
 session_start();
 if(!isset($_SESSION['uid'])){
-    if(!isset($_COOKIE['uniqueID'])){
-       //setcookie("name", $value, time()+3600, "/","", 0);
-       setcookie("uniqueID", uniqid(), time()+3600, "/", "",  0);}
-       if(isset($_COOKIE['uniqueID'])){$cid=$_COOKIE['uniqueID'];}
-       else{
-        $cid=openssl_random_pseudo_bytes(16);
-        $cid=bin2hex($cid);
-       }
+    
+function getUserIP()
+{
+    $client  = @$_SERVER['HTTP_CLIENT_IP'];
+    $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+    $remote  = $_SERVER['REMOTE_ADDR'];
+
+    if(filter_var($client, FILTER_VALIDATE_IP))
+    {
+        $ip = $client;
+    }
+    elseif(filter_var($forward, FILTER_VALIDATE_IP))
+    {
+        $ip = $forward;
+    }
+    else
+    {
+        $ip = $remote;
+    }
+
+    return $ip;
+}
+
+
+$user_ip = getUserIP();
+$_SESSION['ipid']=$user_ip;
 }
 elseif(isset($_SESSION['uid'])){
-    $uid=$_SESSION['uid'];
-    $username=$_SESSION['user'];
+    $uid=mysql_real_escape_string($_SESSION['uid']);
+    $username=mysql_real_escape_string($_SESSION['user']);
     }
 ?>
 <!DOCTYPE html>
@@ -66,8 +84,8 @@ elseif(isset($_SESSION['uid'])){
                     </button>
 
                     <a href="index.php" class="navbar-brand ">
-                        <span class="logo"><strong>  engquip</strong><span class="handwriting"></span><br />
-                            <small >A classified ads for engg. students </small></span>
+                        <span class="logo"><strong>classified</strong><span class="handwriting">ads</span><br />
+                            <small > A Classifieds Ads for engg. students </small></span>
                     </a>
                 </div>
                 <div class="collapse navbar-collapse">
@@ -122,7 +140,7 @@ elseif(isset($_SESSION['uid'])){
 
                                     <input type="text" class="form-control col-sm-3" name="search" placeholder="e.g. c by balaguruswami, GRE books" required/>
                                     <div class=" input-group-addon hidden-xs">
-                                        <div class="btn-group" >
+                                        <!-- <div class="btn-group" >
                                             <select class="btn dropdown-toggle" name="category">
                                                 <option value="All">Choose Category</option>
                                                 <option value="Books">Books</option>
@@ -131,7 +149,7 @@ elseif(isset($_SESSION['uid'])){
                                                 <option value="Services">Services</option>
                                                 <option value="Jobs">Jobs</option>
                                             </select>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -152,11 +170,7 @@ elseif(isset($_SESSION['uid'])){
     </div>
 </div>
             <?php 
-                    $dbhost = "localhost";
-                    $dbuser = "root";
-                    $dbpass = "";
-                    $dbcon = mysql_connect($dbhost,$dbuser,$dbpass);
-                    mysql_select_db('classifiedads',$dbcon);
+                    include("config.php");
                     $sql_op="SELECT * FROM ads";
                     //$result_op=mysqli_query($dbcon,$sql_op);
 

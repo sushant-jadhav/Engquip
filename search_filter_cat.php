@@ -10,7 +10,7 @@ while($ad = mysql_fetch_object($sql))
 {
 ?>
 <div class="col-sm-14 pull-left listings">
-  <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row">  
+  <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row" onclick="location.href='details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>';" style="cursor: pointer;">  
                 <div class="ribbon-wrapper-red"><div class="ribbon-red">&nbsp;<span>Featured<?php echo $srch;?></span></div></div>
                                 <div class="col-sm-2">
                     <a href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>" class="thumbnail " ><img alt="176 * 120" src="<?php echo $ad->adImg1;?>"></a>
@@ -21,22 +21,6 @@ while($ad = mysql_fetch_object($sql))
                     <p class="muted">Located in <strong><?php echo $ad->adCity;?></strong></p>
                     <p class="muted">Posted <?php echo $ad->adDate;?> to <a href="#" class="underline"><?php echo $ad->opName;?></a></p>
                     <p><?php echo $ad->adText;?>...</p>
-                    <p class="ad-description">
-                        <strong>2006</strong> | 
-
-                        <strong>98,000 miles</strong> | 
-
-                        <strong>2,696 cc</strong> | 
-
-                        <strong>Diesel</strong>                
-                    </p>
-                    <p>
-                        <span class="classified_links pull-right">
-                            <a class="link-info underline" href="#">Share</a>&nbsp;
-                            <a class="link-info underline" href="#">Add to favorites</a>
-                            &nbsp;<a class="link-info underline" href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>">Details</a>&nbsp;
-                            &nbsp;<a class="link-info underline" href="#">Contact</a></span>
-                    </p>
                 </div> </div>
 <?php } if(mysql_num_rows($sql)==5){?>
 <div id="more<?php echo $id;?>" class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row">
@@ -62,7 +46,7 @@ while($ad = mysql_fetch_object($sql))
 {
 ?>
 <div class="col-sm-14 pull-left listings">
-  <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row">  
+  <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row" onclick="location.href='details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>';" style="cursor: pointer;">  
                 <div class="ribbon-wrapper-red"><div class="ribbon-red">&nbsp;<span>Featured<?php echo $id;?></span></div></div>
                                 <div class="col-sm-2">
                     <a href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>" class="thumbnail " ><img alt="176 * 120" src="<?php echo $ad->adImg1;?>"></a>
@@ -73,22 +57,6 @@ while($ad = mysql_fetch_object($sql))
                     <p class="muted">Located in <strong><?php echo $ad->adCity;?></strong></p>
                     <p class="muted">Posted <?php echo $ad->adDate;?> to <a href="#" class="underline"><?php echo $ad->opName;?></a></p>
                     <p><?php echo $ad->adText;?>...</p>
-                    <p class="ad-description">
-                        <strong>2006</strong> | 
-
-                        <strong>98,000 miles</strong> | 
-
-                        <strong>2,696 cc</strong> | 
-
-                        <strong>Diesel</strong>                
-                    </p>
-                    <p>
-                        <span class="classified_links pull-right">
-                            <a class="link-info underline" href="#">Share</a>&nbsp;
-                            <a class="link-info underline" href="#">Add to favorites</a>
-                            &nbsp;<a class="link-info underline" href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>">Details</a>&nbsp;
-                            &nbsp;<a class="link-info underline" href="#">Contact</a></span>
-                    </p>
                 </div> </div>
 <?php } if(mysql_num_rows($sql)==5){?>
 <div id="more<?php echo $id;?>" class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row">

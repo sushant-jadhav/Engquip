@@ -55,7 +55,7 @@ if(isset($_SESSION['adsid'])){
 
                     <a href="index.php" class="navbar-brand ">
                         <span class="logo"><strong>classified</strong><span class="handwriting">ads</span><br />
-                            <small >a minimalist theme built with bootstrap </small></span>
+                            <small > A Classifieds Ads for engg. students </small></span>
                     </a>
 
                 </div>
@@ -167,9 +167,11 @@ if(isset($_SESSION['adsid'])){
                                         <tbody>
                                 <?php
                                 include("config.php");
+                                $dbcon=mysqli_connect("localhost","root","");
+                                    $res = mysqli_select_db($dbcon,"classifiedads");
                                 $sql_uad="SELECT ads.*,options.*,users.* from ads inner join options on ads.opId=options.opId left join users on ads.uId=users.uId where ads.uId=$uid";
-                                $result_sql_uad=mysql_query($sql_uad,$connect);
-                                while($uad=mysql_fetch_object($result_sql_uad)){
+                                $result_sql_uad=mysqli_query($dbcon,$sql_uad);
+                                while($uad=mysqli_fetch_object($result_sql_uad)){
                                 ?>
                                             <tr>
                                                 <td><img src="<?php echo $uad->adImg1;?>" style="width:75px" /></td>

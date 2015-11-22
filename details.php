@@ -1,12 +1,15 @@
 <?php
 session_start();
-if(isset($_COOKIE['uniqueID'])){
-    $cid=$_COOKIE['uniqueID'];
-   }
-if(isset($_SESSION['uid'])){
- $uid=$_SESSION['uid'];
- $username=$_SESSION['user'];
+if(!isset($_SESSION['uid'])){
+
+$user_ip=$_SESSION['ipid'];
+//echo $user_ip;
+
 }
+elseif(isset($_SESSION['uid'])){
+    $uid=mysql_real_escape_string($_SESSION['uid']);
+    $username=mysql_real_escape_string($_SESSION['user']);
+    }
  $adid=$_GET['adId'];
  $opid=$_GET['opId'];
 ?>
@@ -39,17 +42,6 @@ if(isset($_SESSION['uid'])){
     </head>
 
     <body>
-        <div id="fb-root"></div>
-        <script>
-            (function(d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) return;
-                js = d.createElement(s); js.id = id;
-                js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-        </script>
-        
         
 
 
@@ -65,8 +57,8 @@ if(isset($_SESSION['uid'])){
                     </button>
 
                     <a href="index.php" class="navbar-brand ">
-                        <span class="logo"><strong>Enquip</strong><span class="handwriting">ads</span><br />
-                            <small >a website foe engg. students </small></span>
+                        <span class="logo"><strong>classified</strong><span class="handwriting">ads</span><br />
+                            <small > A Classifieds Ads for engg. students </small></span>
                     </a>
 
                 </div>
@@ -171,8 +163,10 @@ if(isset($_SESSION['uid'])){
             <br />
                 <?php 
                 include("config.php");
+                $dbcon=mysqli_connect("localhost","root","");
+$res = mysqli_select_db($dbcon,"classifiedads");
                     $sql_ad="SELECT ads.*,users.*,options.* FROM ads left join users on ads.uId=users.uId inner join options on ads.opId=options.opId where ads.adId=$adid and ads.opId=$opid ";
-                    $result_ad =mysqli_query($connect,$sql_ad);
+                    $result_ad =mysqli_query($dbcon,$sql_ad);
                     while($ad=mysqli_fetch_object($result_ad)){
             ?>
             
@@ -196,7 +190,7 @@ if(isset($_SESSION['uid'])){
             <div class="row">
 
                 <div class="col-sm-7">	
-                    <h1 id="ad"><?php echo $ad->adHeading;?> <!-- <a href="#" id="<?php echo $ad->adId;?>" class="approve-button"><i class="fa fa-star wl-button">wishlist it</i></a> --> </h1>
+                    <h1 id="ad"><?php echo $ad->adHeading;?> <a href="#" id="<?php echo $ad->adId;?>" class="approve-button"><i class="fa fa-star wl-button">wishlist it</i></a> </h1>
                     <p>Location: <?php echo $ad->adCity;?>, <?php echo $ad->adRegion;?> India</p>
                 </div>
 
@@ -406,8 +400,11 @@ if(isset($_SESSION['uid'])){
                         <?php 
                        include("config.php");
                     $city=$ad->adCity;
+
+$dbcon=mysqli_connect("localhost","root","");
+$res = mysqli_select_db($dbcon,"classifiedads");
                     $sql_city="SELECT ads.*,options.* FROM ads left join options on ads.opId=options.opId  where  ads.adCity  like '%{$city}%' limit 3 ";
-                    $result_city = mysqli_query($connect,$sql_city);
+                    $result_city = mysqli_query($dbcon,$sql_city);
                         while($adcity = mysqli_fetch_object($result_city)){?>
                                 
                             <div class="row premium  listing-row">
@@ -689,33 +686,34 @@ if(isset($_SESSION['uid'])){
 <script src="js/dropzone.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
+        function add(idad){
+            //console.log(idad);
+            var arrayName=[];
+            
+            }
+
         $('a[class="approve-button"]').click(function(){
-
    //Get the ID of the button that was clicked on
-       var id_of_item_to_approve = $(this).attr("id");
-       console.log(id_of_item_to_approve);
-
+       var idad = $(this).attr("id");
        $.ajax({
           url: 'wishlist.php?adid=<?php echo $ad;?>', //This is the page where you will handle your SQL insert
           type: 'POST',
+          cache:'false',
           datatype: 'html',
-          data: {id: id_of_item_to_approve}, //The data your sending to some-page.php
+          data: {id: idad}, //The data your sending to some-page.php
           success: function(data){
-              console.log("AJAX request was successfull");
-              var c=$("#s").html(id_of_item_to_approve);
-              <?php $wisharray=array();
-              
-              array_push($wisharray, $adid);
-              $_SESSION['wishing']=$wisharray;
-              // print_r($_SESSION['wishing']);
-              ?>
-              var m=<?php echo json_encode($_SESSION['wishing']);
-              ?>;
+             // / console.log(idad);
+                add(idad);
           },
           error:function(){
               console.log("AJAX request was a failure");
-          }   
+          }
         });
+       //var data = JSON.parse(savedData);
+       //console.log(data);
+       //     localStorage.setItem('testObject', JSON.stringify(arr));
+        // var retrievedObject = localStorage.getItem('testObject');
+        // console.log('retrievedObject: ', JSON.parse(retrievedObject));
 
     });
     });

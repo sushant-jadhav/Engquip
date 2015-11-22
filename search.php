@@ -67,7 +67,7 @@ if(isset($_SESSION['uid'])){
 
                     <a href="index.php" class="navbar-brand ">
                         <span class="logo"><strong>classified</strong><span class="handwriting">ads</span><br />
-                            <small >a minimalist theme built with bootstrap </small></span>
+                            <small > A Classifieds Ads for engg. students </small></span>
                     </a>
                 </div>
 
@@ -168,13 +168,11 @@ if(isset($_SESSION['uid'])){
     <div class="row" id="bcrumb">
         <div class="col-sm-12">
             <ol class="breadcrumb">
-                <li><a href="index.php">Home</a></li><?php if(isset($_COOKIE['uniqueID'])){
-     $cid=$_COOKIE['uniqueID'];
-   }?>
-                <li id="catg"><a href="#"><?php
-                                if(isset($_GET['search'])){$srch=$_GET['search'];  }elseif (isset($_POST['term'])){$srch=$_POST['term'];$_SESSION['val']=$srch;$cat=$_POST['cat']; echo $cat; }?></a></li>
-               <li id="catf"><a href="#"><?php
-                                if(isset($_POST['fcategory'])){echo $fc=$_POST['fcategory'];  }?></a></li>
+                <!-- <li><a href="index.php">Home</a></li> -->
+                <span id="catg"><a href="#"><?php
+                                if(isset($_GET['search'])){$srch=$_GET['search'];  }elseif (isset($_POST['term'])){$srch=$_POST['term'];$_SESSION['val']=$srch; }?></a></span>
+               <span id="catf"><a href="#"><?php
+                                if(isset($_POST['fcategory'])){echo $fc=$_POST['fcategory'];  }?></a></span>
                 
                <!-- <li class="active">Cars</li> -->
                 <!-- <li class="active">4,699 results for <strong>"Cars"</strong> in London</li> -->
@@ -185,7 +183,7 @@ if(isset($_SESSION['uid'])){
 <?php ?>
 
     <div class="row">
-    <div class="col-sm-3  hidden-xs">
+    <!-- <div class="col-sm-3  hidden-xs">
     <div class="sidebar ">      
     <div class="row ">
     <strong>Filter Here</strong>
@@ -429,8 +427,8 @@ if(isset($_SESSION['uid'])){
         </div>
     </div>
 </div>
-</div>
-        <div class="col-sm-9 pull-left listings" id="main2">
+</div> -->
+        <div class="col-sm-10 col-sm-offset-1 pull-left listings" id="main2">
             <div class="row listing-row" style="margin-top: -10px;">
                 <div class="pull-left">
                     <strong>Today, <?php echo date("d");?></strong>
@@ -446,7 +444,7 @@ if(isset($_SESSION['uid'])){
                 <?php if(isset($srch)){
                     include("config.php");
                     //$sql="SELECT ads.*,options.* FROM ads inner join options on ads.opId=options.opId where ads.adHeading like '%".$srch."%'  ";
-             $e="SELECT ads.*,options.*,category.* FROM ads left join options on ads.opId=options.opId inner join category on options.cId=category.cId where  ads.adHeading  like '%{$srch}%' and category.cName='$cat'  order by adId desc limit 8";
+             $e="SELECT ads.*,options.*,category.* FROM ads left join options on ads.opId=options.opId inner join category on options.cId=category.cId where  ads.adHeading  like '%{$srch}%'  order by adId desc limit 8";
              $q = mysqli_query($connect,$e);
              $nothing=mysqli_num_rows($q);
              if($nothing>0){
@@ -455,9 +453,9 @@ if(isset($_SESSION['uid'])){
             $id = $ad->adId;
             ?>
 
-                <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row" id="ajaxdiv">
-                <div class="ribbon-wrapper-red"><div class="ribbon-red">&nbsp;<span>Featured</span></div></div>
-                                <div class="col-sm-2">
+                <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row" id="ajaxdiv" onclick="location.href='details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>';" style="cursor: pointer;">
+                <!-- <div class="ribbon-wrapper-red"><div class="ribbon-red">&nbsp;<span>Featured</span></div></div> -->
+                <div class="col-sm-2">
                     <a href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>" class="thumbnail " ><img alt="176 * 120" src="<?php echo $ad->adImg1;?>"></a>
                 </div>
 
@@ -466,22 +464,6 @@ if(isset($_SESSION['uid'])){
                     <p class="muted">Located in <strong><?php echo $ad->adRegion;?>, <?php echo $ad->adCity;?></strong></p>
                     <p class="muted">Posted Feb 05, 2014 to <a href="#" class="underline"><?php echo $ad->opName;?></a></p>
                     <p maxlength="10"><?php echo $ad->adText;?>...</p>
-                    <p class="ad-description">
-                        <strong>2006</strong> | 
-
-                        <strong>98,000 miles</strong> | 
-
-                        <strong>2,696 cc</strong> | 
-
-                        <strong>Diesel</strong>
-                    </p>
-                    <p>
-                        <span class="classified_links pull-right">
-                            <a class="link-info underline" href="#">Share</a>&nbsp;
-                            <a class="link-info underline" href="">Add to favorites</a>
-                            &nbsp;<a class="link-info underline" href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>">Details</a>&nbsp;
-                            &nbsp;<a class="link-info underline" href="#">Contact</a></span>
-                    </p>
                 </div>
             </div>
             <?php }

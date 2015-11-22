@@ -54,7 +54,7 @@ if(isset($_SESSION['uid'])){
 
                     <a href="index.php" class="navbar-brand ">
                         <span class="logo"><strong>classified</strong><span class="handwriting">ads</span><br />
-                            <small >a minimalist theme built with bootstrap </small></span>
+                            <small > A Classifieds Ads for engg. students </small></span>
                     </a>
                 </div>
 
@@ -107,7 +107,7 @@ if(isset($_SESSION['uid'])){
                                                     <span class="input-group-addon input-group-addon-text hidden-xs">Find me a</span>
 
                                                     <input type="text" class="form-control col-sm-3" name="search" placeholder="e.g. BMW, 2 bed flat, sofa ">
-                                                    <div class=" input-group-addon hidden-xs">
+                                                    <!-- <div class=" input-group-addon hidden-xs">
                                                         <div class="btn-group" >
                                                             <select class="btn dropdown-toggle" name="category">
                                                                 <option>Choose Category</option>
@@ -118,7 +118,7 @@ if(isset($_SESSION['uid'])){
                                                                 <option value="Jobs">Jobs</option>
                                                             </select>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
 
                                                 </div>
 
@@ -159,7 +159,7 @@ if(isset($_SESSION['uid'])){
 
     <br />
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-10 col-sm-offset-1">
             <ol class="breadcrumb">
                 <li><a href="index.php">Home</a></li>
                 <li class="active"><a href="listings.php?opId=<?php echo $opid;?>"><?php echo $option;?></a></li>
@@ -172,162 +172,11 @@ if(isset($_SESSION['uid'])){
 
 
     <div class="row">
-    <!-- <div class="col-sm-4  hidden-xs">
-            <div class="sidebar ">      
-    <div class="row ">
-
-    </div>
-    <br />
-
-    <div class="row ">
-
-
-        <div class="col-sm-11">
-
-            <div class="panel panel-default">
-                <div class="panel-heading">Filters</div>
-                <div class="panel-body">
-                    <form class="form-inline mini" method="POST" action="update.php" style="margin-bottom: 0px;">
-                        <fieldset>              
-
-                            <div class="row filter-row">
-                                <div class="col-sm-6">
-                                    <label>Category</label>
-                                </div>
-                                <div class="col-sm-6">
-                                    <select class=" form-control" name="category">
-                                        <option>Choose</option>
-                                        <option value="1">Books</option>
-                                        <option value="2">Tools</option>
-                                        <option value="3">Electronics & Computer</option>
-                                        <option value="4">Services</option>
-                                        <option value="5">Jobs</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row filter-row">
-                                <div class="col-sm-6">
-                                    <label>Options</label>
-                                </div>
-                                <div class="col-sm-6">
-                                    <select class="col-sm-10 form-control" name="option">
-                                    <option>Choose</option>
-                                        <option value="1">Computer Science</option>
-                                        <option value="2">Infromation Technology</option>
-                                        <option value="3">Mechanical</option>
-                                        <option value="4">Electronics</option>
-                                        <option value="5">Extc </option>
-                                        <option value="6">Electrical</option>
-                                        <option value="7">Civil</option>
-                                        <option value="8">PRoduction</option>
-                                        <option value="20">Placement Books</option>
-                                        <option value="21">GRE &amp; other books</option>
-                                        <option value="9">WorkShoop Tools</option>
-                                        <option value="10">Drafters</option>
-                                        <option value="11">Other Tools</option>
-                                        <option value="12">Computer &amp; Accessories </option>
-                                        <option value="13">Camera &amp; Accessories</option>
-                                        <option value="14">Other Accessories</option>
-                                        <option value="15">Education &amp; Classes </option>
-                                        <option value="16">Web Development</option>
-                                        <option value="17">Electronics &amp; Computer Repair</option>
-                                        <option value="18">Other Services</option>
-                                        <option value="19">Internship </option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row filter-row">
-                                <div class="col-sm-6">
-                                    <label>Seller type</label>
-                                </div>
-                                <div class="col-sm-6">
-                                    <select class="col-sm-10 form-control" n>
-                                        <option>Any</option>
-                                        <option value="New">New</option>
-                                        <option value="Used">Used</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row filter-row">
-                                <div class="col-sm-12">
-                                    <label>Price range</label>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-inr"></i></span>
-                                        <input type="email" class="form-control price-input" placeholder="min" />
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-inr"></i></span>
-                                        <input type="email" class="form-control price-input" placeholder="max" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row filter-row">
-                                <div class="col-sm-12">
-                                    <label>Search only:</label>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="optionsRadios" value="option1" checked>
-                                            New ads
-                                        </label>
-                                    </div><br />
-
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="optionsRadios" value="option2">
-                                            Featured ads
-                                        </label>
-                                    </div><br />
-
-                                </div>
-                            </div>
-
-                            <div class="row filter-row">    
-
-                                <div class="col-sm-2 pull-right" style="margin-top: 10px;">
-                                    <button class="btn btn-primary pull-right" name="update" type="submit">Update results</button>
-
-                                </div>
-                            </div>
-
-
-                        </fieldset>
-                    </form>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
-
-
-    <div class="row ">
-        <div class="col-sm-11">
-        </div>
-    </div>
-
-    <div class="row ">
-        <div class="col-sm-11">
-        </div>
-    </div>
-
-    <div class="row ">
-        <div class="col-sm-11">
-        </div>
-    </div>
-</div>        
-</div> -->
-        <div class="col-sm-12 pull-left listings">
+    <br/><br/>
+        <div class="col-sm-10 col-sm-offset-1 pull-left listings">
             <div class="row listing-row" style="margin-top: -10px;">
                 <div class="pull-left">
-                    <strong>Today, <?php echo date("d");?></strong>
+                    <!-- <strong>Today, <?php echo date("d");?></strong> -->
                 </div>
                 <div class="pull-right">
                     <span style="">Sort by:&nbsp;&nbsp;&nbsp;</span>   
@@ -337,17 +186,15 @@ if(isset($_SESSION['uid'])){
             </div>
             <?php if(isset($opid)){
                     include("config.php");
-                    $sql="SELECT ads.*,users.*,options.* FROM ads left join users on ads.uId=users.uId left join options on ads.opId=options.opId where ads.opId=$opid ";
+                    $sql="SELECT ads.*,users.*,options.* FROM ads left join users on ads.uId=users.uId left join options on ads.opId=options.opId where ads.opId=$opid LIMIT 5 ";
                $result_ads = mysqli_query($connect,$sql);
                 while($ad = mysqli_fetch_object($result_ads)){
                     $id = $ad->adId;
-
             ?>
 
-                <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row">
-                <!-- <div class="ribbon-wrapper-red"><div class="ribbon-red">&nbsp;<span>Featured</span></div></div> -->
-                                <div class="col-sm-2">
-                    <a href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>" class="thumbnail " ><img alt="176 * 120" src="<?php echo $ad->adImg1;?>"></a>
+            <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row" onclick="location.href='details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>';" style="cursor: pointer;">
+                <div class="col-sm-2">
+                 <a href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>" class="thumbnail " > <img alt="176 * 120" src="<?php echo $ad->adImg1;?>"></a>
                 </div>
 
                 <div class="col-sm-10">
@@ -355,24 +202,9 @@ if(isset($_SESSION['uid'])){
                     <p class="muted">Located in <strong><?php echo $ad->adCity;?></strong></p>
                     <p class="muted">Posted Feb 05, 2014 to <a href="#" class="underline"><?php echo $ad->opName;?></a></p>
                     <p><?php echo $ad->adText?></p>
-                    <p class="ad-description">
-                        <strong>2006</strong> | 
-
-                        <strong>98,000 miles</strong> | 
-
-                        <strong>2,696 cc</strong> | 
-
-                        <strong>Diesel</strong>                
-                    </p>
-                    <p>
-                        <span class="classified_links pull-right">
-                            <!-- <a class="link-info underline" href="#">Share</a>&nbsp;
-                            <a class="link-info underline" href="#">Add to favorites</a> -->
-                            &nbsp;<a class="link-info " href="details.php">Details</a>&nbsp;|
-                            &nbsp;<a class="link-info " href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>">Contact</a></span>
-                    </p>
                 </div>
             </div>
+            
             <?php }if(mysqli_num_rows($result_ads)>0){?>
             <div id="more<?php echo $id; ?>" class="pmc_loadbox">
             <a href="#" id="<?php echo $id; ?>" class="more" style="margin-left:200px">Loading..</a>
@@ -385,14 +217,14 @@ if(isset($_SESSION['uid'])){
             else{?>
             <?php
                 include("config.php");
-                    $sql="SELECT ads.*,users.*,options.* FROM ads left join users on ads.uId=users.uId inner join options on ads.opId=options.opId ";
-               $result_ads = mysqli_query($sql,$dbcon);
+                    $sql="SELECT ads.*,users.*,options.* FROM ads left join users on ads.uId=users.uId inner join options on ads.opId=options.opId LIMIT 5 ";
+               $result_ads = mysqli_query($connect,$sql);
                 while($ad = mysqli_fetch_object($result_ads)){
                     $id = $ad->adId;
             ?>
 
-                <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row">
-                <div class="ribbon-wrapper-red"><div class="ribbon-red">&nbsp;<span>Featured</span></div></div>
+                <div class="row premium box-shad brdr btm-mrg-20 bgc-fff listing-row" onclick="location.href='details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>';" style="cursor: pointer;">
+                <!-- <div class="ribbon-wrapper-red"><div class="ribbon-red">&nbsp;<span>Featured</span></div></div> -->
                                 <div class="col-sm-2">
                     <a href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>" class="thumbnail " ><img alt="176 * 120" src="<?php echo $ad->adImg1;?>"></a>
                 </div>
@@ -402,22 +234,6 @@ if(isset($_SESSION['uid'])){
                     <p class="muted">Located in <strong><?php echo $ad->adCity;?></strong></p>
                     <p class="muted">Posted <?php echo $ad->adDate;?> to <a href="#" class="underline"><?php echo $ad->opName;?></a></p>
                     <p><?php echo $ad->adText;?>...</p>
-                    <p class="ad-description">
-                        <strong>2006</strong> |
-
-                        <strong>98,000 miles</strong> |
-
-                        <strong>2,696 cc</strong> |
-
-                        <strong>Diesel</strong>
-                    </p>
-                    <p>
-                        <span class="classified_links pull-right">
-                            <a class="link-info underline" href="#">Share</a>&nbsp;
-                            <a class="link-info underline" href="#">Add to favorites</a>
-                            &nbsp;<a class="link-info underline" href="details.php?adId=<?php echo $ad->adId;?>&opId=<?php echo $ad->opId;?>">Details</a>&nbsp;
-                            &nbsp;<a class="link-info underline" href="#">Contact</a></span>
-                    </p>
                 </div>
             </div><?php }
             if(mysqli_num_rows($result_ads)>0){?>

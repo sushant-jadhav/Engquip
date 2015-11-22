@@ -52,7 +52,7 @@ $username=$_SESSION['user'];
 
                     <a href="index.php" class="navbar-brand ">
                         <span class="logo"><strong>classified</strong><span class="handwriting">ads</span><br />
-                            <small >a minimalist theme built with bootstrap </small></span>
+                            <small > A Classifieds Ads for engg. students </small></span>
                     </a>
 
                 </div>
@@ -159,7 +159,16 @@ $username=$_SESSION['user'];
 
 </div>
         </div>
+<?php
+include('config.php');
+$dbcon=mysqli_connect("localhost","root","");
+$res = mysqli_select_db($dbcon,"classifiedads");
+$sel_user = "SELECT * from users where uId=$uid";
+$res_user= mysqli_query($dbcon,$sel_user);
+$row=mysqli_fetch_array($res_user);
+$name = $row['uFirstname'];
 
+?>
         <div class="col-sm-9">
             <div class="panel panel-default">
                 <div class="panel-heading">Dashboard</div>
@@ -235,10 +244,10 @@ $username=$_SESSION['user'];
                                                 </select>
                                             </div>
                                             <div class="col-sm-5">
-                                                <input type="email" class="form-control " id="exampleInputEmail1" placeholder="Your first name">
+                                                <input type="text" class="form-control" value="<?php echo $name;?>" id="exampleInputEmail1" placeholder="Your first name">
                                             </div>
                                             <div class="col-sm-5">
-                                                <input type="email" class="form-control " id="exampleInputEmail1" placeholder="Your second name">
+                                                <input type="text" class="form-control " value="<?php echo $row['uLastname'];?>" id="exampleInputEmail1" placeholder="Your second name">
                                             </div>
                                         </div>
 
@@ -247,7 +256,7 @@ $username=$_SESSION['user'];
 
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Email address</label>
-                                        <input type="email" class="form-control " id="exampleInputEmail1" placeholder="Enter email">
+                                        <input type="email" class="form-control " value="<?php echo $row['uEmail'];?>" id="exampleInputEmail1" placeholder="Enter email">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Password</label>

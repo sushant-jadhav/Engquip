@@ -55,7 +55,7 @@ $adsid=$_SESSION['adsid'];
 
                     <a href="index.php" class="navbar-brand ">
                         <span class="logo"><strong>classified</strong><span class="handwriting">ads</span><br />
-                            <small >a minimalist theme built with bootstrap </small></span>
+                            <small > A Classifieds Ads for engg. students </small></span>
                     </a>
 
                 </div>
@@ -147,9 +147,11 @@ $adsid=$_SESSION['adsid'];
         </div>
     <?php
     include("config.php");
+    $dbcon=mysqli_connect("localhost","root","");
+$res = mysqli_select_db($dbcon,"classifiedads");
     $sql_edit="SELECT ads.*,options.* from ads left join options on ads.opId=options.opId where ads.adId='$adid'";
-    $result_edit=mysql_query($sql_edit,$connect);
-    while($ad_edit=mysql_fetch_object($result_edit)){
+    $result_edit=mysqli_query($dbcon,$sql_edit);
+    while($ad_edit=mysqli_fetch_object($result_edit)){
     ?>
         <div class="col-sm-9">
             <form class="form-vertical" action="edit.php" method="POST" enctype="multipart/form-data">
